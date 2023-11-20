@@ -1,0 +1,3168 @@
+State 47 conflicts: 14 shift/reduce
+State 48 conflicts: 14 shift/reduce
+State 49 conflicts: 14 shift/reduce
+State 87 conflicts: 14 shift/reduce
+State 88 conflicts: 14 shift/reduce
+State 89 conflicts: 14 shift/reduce
+State 90 conflicts: 14 shift/reduce
+State 91 conflicts: 14 shift/reduce
+State 93 conflicts: 14 shift/reduce
+State 94 conflicts: 14 shift/reduce
+State 95 conflicts: 14 shift/reduce
+State 96 conflicts: 14 shift/reduce
+State 97 conflicts: 14 shift/reduce
+State 98 conflicts: 14 shift/reduce
+State 99 conflicts: 14 shift/reduce
+State 100 conflicts: 14 shift/reduce
+State 113 conflicts: 14 shift/reduce, 14 reduce/reduce
+State 114 conflicts: 14 shift/reduce, 14 reduce/reduce
+State 115 conflicts: 1 shift/reduce
+State 121 conflicts: 14 shift/reduce
+State 127 conflicts: 3 shift/reduce
+State 128 conflicts: 3 shift/reduce
+
+
+Grammar
+
+    0 $accept: source $end
+
+    1 source: ε
+    2       | sourceItem source
+
+    3 sourceItem: FUNCTION funcSignature optionalFuncBody
+
+    4 optionalFuncBody: ε
+    5                 | funcBody
+
+    6 funcBody: listStatement END FUNCTION
+
+    7 funcSignature: IDENTIFIER funcArgsInfo
+
+    8 funcArgsInfo: LPAREN listArgDef RPAREN optionalTypeRef
+
+    9 listArgDef: ε
+   10           | argDef
+   11           | argDef COMMA listArgDef
+
+   12 argDef: IDENTIFIER optionalTypeRef
+
+   13 optionalTypeRef: ε
+   14                | AS typeRef
+
+   15 typeRef: builtin
+   16        | custom
+   17        | array
+
+   18 builtin: TYPEDEF
+
+   19 custom: IDENTIFIER
+
+   20 array: typeRef ARRAY_COMMAS
+
+   21 statement: var
+   22          | if
+   23          | while
+   24          | do
+   25          | break
+   26          | expression
+
+   27 var: DIM listIdentifier AS typeRef
+
+   28 listIdentifier: IDENTIFIER
+   29               | IDENTIFIER COMMA listIdentifier
+
+   30 if: IF expr THEN listStatement optionalElseStatement END IF
+
+   31 listStatement: ε
+   32              | statement listStatement
+
+   33 optionalElseStatement: ε
+   34                      | ELSE statement listStatement
+
+   35 while: WHILE expr listStatement WEND
+
+   36 do: DO listStatement LOOP WHILE expr
+   37   | DO listStatement LOOP UNTIL expr
+
+   38 break: BREAK
+
+   39 expression: expr SEMICOLON
+
+   40 expr: binary
+   41     | unary
+   42     | braces
+   43     | callOrIndexer
+   44     | place
+   45     | literal
+
+   46 binary: expr EQUAL expr
+   47       | expr PLUS expr
+   48       | expr MINUS expr
+   49       | expr STAR expr
+   50       | expr SLASH expr
+   51       | expr PERCENT expr
+   52       | expr EQUAL EQUAL expr
+   53       | expr NOTEQUAL expr
+   54       | expr LESSTHAN expr
+   55       | expr GREATERTHAN expr
+   56       | expr LESSTHANEQ expr
+   57       | expr GREATERTHANEQ expr
+   58       | expr AND expr
+   59       | expr OR expr
+
+   60 unary: PLUS expr
+   61      | MINUS expr
+   62      | NOT expr
+
+   63 braces: LPAREN expr RPAREN
+
+   64 callOrIndexer: expr LPAREN optionalListExpr RPAREN
+
+   65 optionalListExpr: listExpr
+   66                 | ε
+
+   67 listExpr: expr COMMA listExpr
+   68         | expr
+
+   69 place: IDENTIFIER
+
+   70 literal: TRUE
+   71        | FALSE
+   72        | STR
+   73        | CHAR
+   74        | HEX
+   75        | BIN
+   76        | DEC
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    PLUS <node> (258) 47 60
+    MINUS <node> (259) 48 61
+    STAR <node> (260) 49
+    SLASH <node> (261) 50
+    PERCENT <node> (262) 51
+    EQUAL <node> (263) 46 52
+    NOTEQUAL <node> (264) 53
+    LESSTHAN <node> (265) 54
+    GREATERTHAN <node> (266) 55
+    LESSTHANEQ <node> (267) 56
+    GREATERTHANEQ <node> (268) 57
+    AND <node> (269) 58
+    OR <node> (270) 59
+    NOT <node> (271) 62
+    IDENTIFIER <node> (272) 7 12 19 28 29 69
+    STR <node> (273) 72
+    COMMA <node> (274) 11 29 67
+    CHAR <node> (275) 73
+    BIN <node> (276) 75
+    HEX <node> (277) 74
+    DEC <node> (278) 76
+    TRUE <node> (279) 70
+    FALSE <node> (280) 71
+    IF <node> (281) 30
+    THEN <node> (282) 30
+    ELSE <node> (283) 34
+    LOOP <node> (284) 36 37
+    WHILE <node> (285) 35 36
+    UNTIL <node> (286) 37
+    DO <node> (287) 36 37
+    BREAK <node> (288) 38
+    END <node> (289) 6 30
+    WEND <node> (290) 35
+    SEMICOLON <node> (291) 39
+    LPAREN <node> (292) 8 63 64
+    RPAREN <node> (293) 8 63 64
+    TYPEDEF <node> (294) 18
+    DIM <node> (295) 27
+    AS <node> (296) 14 27
+    FUNCTION <node> (297) 3 6
+    ARRAY_COMMAS <node> (298) 20
+
+
+Nonterminals, with rules where they appear
+
+    $accept (44)
+        on left: 0
+    source <node> (45)
+        on left: 1 2
+        on right: 0 2
+    sourceItem <node> (46)
+        on left: 3
+        on right: 2
+    optionalFuncBody <node> (47)
+        on left: 4 5
+        on right: 3
+    funcBody <node> (48)
+        on left: 6
+        on right: 5
+    funcSignature <node> (49)
+        on left: 7
+        on right: 3
+    funcArgsInfo <node> (50)
+        on left: 8
+        on right: 7
+    listArgDef <node> (51)
+        on left: 9 10 11
+        on right: 8 11
+    argDef <node> (52)
+        on left: 12
+        on right: 10 11
+    optionalTypeRef <node> (53)
+        on left: 13 14
+        on right: 8 12
+    typeRef <node> (54)
+        on left: 15 16 17
+        on right: 14 20 27
+    builtin <node> (55)
+        on left: 18
+        on right: 15
+    custom <node> (56)
+        on left: 19
+        on right: 16
+    array <node> (57)
+        on left: 20
+        on right: 17
+    statement <node> (58)
+        on left: 21 22 23 24 25 26
+        on right: 32 34
+    var <node> (59)
+        on left: 27
+        on right: 21
+    listIdentifier <node> (60)
+        on left: 28 29
+        on right: 27 29
+    if <node> (61)
+        on left: 30
+        on right: 22
+    listStatement <node> (62)
+        on left: 31 32
+        on right: 6 30 32 34 35 36 37
+    optionalElseStatement <node> (63)
+        on left: 33 34
+        on right: 30
+    while <node> (64)
+        on left: 35
+        on right: 23
+    do <node> (65)
+        on left: 36 37
+        on right: 24
+    break <node> (66)
+        on left: 38
+        on right: 25
+    expression <node> (67)
+        on left: 39
+        on right: 26
+    expr <node> (68)
+        on left: 40 41 42 43 44 45
+        on right: 30 35 36 37 39 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 67 68
+    binary <node> (69)
+        on left: 46 47 48 49 50 51 52 53 54 55 56 57 58 59
+        on right: 40
+    unary <node> (70)
+        on left: 60 61 62
+        on right: 41
+    braces <node> (71)
+        on left: 63
+        on right: 42
+    callOrIndexer <node> (72)
+        on left: 64
+        on right: 43
+    optionalListExpr <node> (73)
+        on left: 65 66
+        on right: 64
+    listExpr <node> (74)
+        on left: 67 68
+        on right: 65 67
+    place <node> (75)
+        on left: 69
+        on right: 44
+    literal <node> (76)
+        on left: 70 71 72 73 74 75 76
+        on right: 45
+
+
+State 0
+
+    0 $accept: • source $end
+
+    FUNCTION  shift, and go to state 1
+
+    $default  reduce using rule 1 (source)
+
+    source      go to state 2
+    sourceItem  go to state 3
+
+
+State 1
+
+    3 sourceItem: FUNCTION • funcSignature optionalFuncBody
+
+    IDENTIFIER  shift, and go to state 4
+
+    funcSignature  go to state 5
+
+
+State 2
+
+    0 $accept: source • $end
+
+    $end  shift, and go to state 6
+
+
+State 3
+
+    2 source: sourceItem • source
+
+    FUNCTION  shift, and go to state 1
+
+    $default  reduce using rule 1 (source)
+
+    source      go to state 7
+    sourceItem  go to state 3
+
+
+State 4
+
+    7 funcSignature: IDENTIFIER • funcArgsInfo
+
+    LPAREN  shift, and go to state 8
+
+    funcArgsInfo  go to state 9
+
+
+State 5
+
+    3 sourceItem: FUNCTION funcSignature • optionalFuncBody
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    IF          shift, and go to state 21
+    WHILE       shift, and go to state 22
+    DO          shift, and go to state 23
+    BREAK       shift, and go to state 24
+    LPAREN      shift, and go to state 25
+    DIM         shift, and go to state 26
+
+    END       reduce using rule 31 (listStatement)
+    $default  reduce using rule 4 (optionalFuncBody)
+
+    optionalFuncBody  go to state 27
+    funcBody          go to state 28
+    statement         go to state 29
+    var               go to state 30
+    if                go to state 31
+    listStatement     go to state 32
+    while             go to state 33
+    do                go to state 34
+    break             go to state 35
+    expression        go to state 36
+    expr              go to state 37
+    binary            go to state 38
+    unary             go to state 39
+    braces            go to state 40
+    callOrIndexer     go to state 41
+    place             go to state 42
+    literal           go to state 43
+
+
+State 6
+
+    0 $accept: source $end •
+
+    $default  accept
+
+
+State 7
+
+    2 source: sourceItem source •
+
+    $default  reduce using rule 2 (source)
+
+
+State 8
+
+    8 funcArgsInfo: LPAREN • listArgDef RPAREN optionalTypeRef
+
+    IDENTIFIER  shift, and go to state 44
+
+    $default  reduce using rule 9 (listArgDef)
+
+    listArgDef  go to state 45
+    argDef      go to state 46
+
+
+State 9
+
+    7 funcSignature: IDENTIFIER funcArgsInfo •
+
+    $default  reduce using rule 7 (funcSignature)
+
+
+State 10
+
+   60 unary: PLUS • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 47
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 11
+
+   61 unary: MINUS • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 48
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 12
+
+   62 unary: NOT • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 49
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 13
+
+   69 place: IDENTIFIER •
+
+    $default  reduce using rule 69 (place)
+
+
+State 14
+
+   72 literal: STR •
+
+    $default  reduce using rule 72 (literal)
+
+
+State 15
+
+   73 literal: CHAR •
+
+    $default  reduce using rule 73 (literal)
+
+
+State 16
+
+   75 literal: BIN •
+
+    $default  reduce using rule 75 (literal)
+
+
+State 17
+
+   74 literal: HEX •
+
+    $default  reduce using rule 74 (literal)
+
+
+State 18
+
+   76 literal: DEC •
+
+    $default  reduce using rule 76 (literal)
+
+
+State 19
+
+   70 literal: TRUE •
+
+    $default  reduce using rule 70 (literal)
+
+
+State 20
+
+   71 literal: FALSE •
+
+    $default  reduce using rule 71 (literal)
+
+
+State 21
+
+   30 if: IF • expr THEN listStatement optionalElseStatement END IF
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 50
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 22
+
+   35 while: WHILE • expr listStatement WEND
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 51
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 23
+
+   36 do: DO • listStatement LOOP WHILE expr
+   37   | DO • listStatement LOOP UNTIL expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    IF          shift, and go to state 21
+    WHILE       shift, and go to state 22
+    DO          shift, and go to state 23
+    BREAK       shift, and go to state 24
+    LPAREN      shift, and go to state 25
+    DIM         shift, and go to state 26
+
+    $default  reduce using rule 31 (listStatement)
+
+    statement      go to state 29
+    var            go to state 30
+    if             go to state 31
+    listStatement  go to state 52
+    while          go to state 33
+    do             go to state 34
+    break          go to state 35
+    expression     go to state 36
+    expr           go to state 37
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 24
+
+   38 break: BREAK •
+
+    $default  reduce using rule 38 (break)
+
+
+State 25
+
+   63 braces: LPAREN • expr RPAREN
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 53
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 26
+
+   27 var: DIM • listIdentifier AS typeRef
+
+    IDENTIFIER  shift, and go to state 54
+
+    listIdentifier  go to state 55
+
+
+State 27
+
+    3 sourceItem: FUNCTION funcSignature optionalFuncBody •
+
+    $default  reduce using rule 3 (sourceItem)
+
+
+State 28
+
+    5 optionalFuncBody: funcBody •
+
+    $default  reduce using rule 5 (optionalFuncBody)
+
+
+State 29
+
+   32 listStatement: statement • listStatement
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    IF          shift, and go to state 21
+    WHILE       shift, and go to state 22
+    DO          shift, and go to state 23
+    BREAK       shift, and go to state 24
+    LPAREN      shift, and go to state 25
+    DIM         shift, and go to state 26
+
+    $default  reduce using rule 31 (listStatement)
+
+    statement      go to state 29
+    var            go to state 30
+    if             go to state 31
+    listStatement  go to state 56
+    while          go to state 33
+    do             go to state 34
+    break          go to state 35
+    expression     go to state 36
+    expr           go to state 37
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 30
+
+   21 statement: var •
+
+    $default  reduce using rule 21 (statement)
+
+
+State 31
+
+   22 statement: if •
+
+    $default  reduce using rule 22 (statement)
+
+
+State 32
+
+    6 funcBody: listStatement • END FUNCTION
+
+    END  shift, and go to state 57
+
+
+State 33
+
+   23 statement: while •
+
+    $default  reduce using rule 23 (statement)
+
+
+State 34
+
+   24 statement: do •
+
+    $default  reduce using rule 24 (statement)
+
+
+State 35
+
+   25 statement: break •
+
+    $default  reduce using rule 25 (statement)
+
+
+State 36
+
+   26 statement: expression •
+
+    $default  reduce using rule 26 (statement)
+
+
+State 37
+
+   39 expression: expr • SEMICOLON
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    SEMICOLON      shift, and go to state 71
+    LPAREN         shift, and go to state 72
+
+
+State 38
+
+   40 expr: binary •
+
+    $default  reduce using rule 40 (expr)
+
+
+State 39
+
+   41 expr: unary •
+
+    $default  reduce using rule 41 (expr)
+
+
+State 40
+
+   42 expr: braces •
+
+    $default  reduce using rule 42 (expr)
+
+
+State 41
+
+   43 expr: callOrIndexer •
+
+    $default  reduce using rule 43 (expr)
+
+
+State 42
+
+   44 expr: place •
+
+    $default  reduce using rule 44 (expr)
+
+
+State 43
+
+   45 expr: literal •
+
+    $default  reduce using rule 45 (expr)
+
+
+State 44
+
+   12 argDef: IDENTIFIER • optionalTypeRef
+
+    AS  shift, and go to state 73
+
+    $default  reduce using rule 13 (optionalTypeRef)
+
+    optionalTypeRef  go to state 74
+
+
+State 45
+
+    8 funcArgsInfo: LPAREN listArgDef • RPAREN optionalTypeRef
+
+    RPAREN  shift, and go to state 75
+
+
+State 46
+
+   10 listArgDef: argDef •
+   11           | argDef • COMMA listArgDef
+
+    COMMA  shift, and go to state 76
+
+    $default  reduce using rule 10 (listArgDef)
+
+
+State 47
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   60 unary: PLUS expr •
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 60 (unary)]
+    MINUS          [reduce using rule 60 (unary)]
+    STAR           [reduce using rule 60 (unary)]
+    SLASH          [reduce using rule 60 (unary)]
+    PERCENT        [reduce using rule 60 (unary)]
+    EQUAL          [reduce using rule 60 (unary)]
+    NOTEQUAL       [reduce using rule 60 (unary)]
+    LESSTHAN       [reduce using rule 60 (unary)]
+    GREATERTHAN    [reduce using rule 60 (unary)]
+    LESSTHANEQ     [reduce using rule 60 (unary)]
+    GREATERTHANEQ  [reduce using rule 60 (unary)]
+    AND            [reduce using rule 60 (unary)]
+    OR             [reduce using rule 60 (unary)]
+    LPAREN         [reduce using rule 60 (unary)]
+    $default       reduce using rule 60 (unary)
+
+
+State 48
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   61 unary: MINUS expr •
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 61 (unary)]
+    MINUS          [reduce using rule 61 (unary)]
+    STAR           [reduce using rule 61 (unary)]
+    SLASH          [reduce using rule 61 (unary)]
+    PERCENT        [reduce using rule 61 (unary)]
+    EQUAL          [reduce using rule 61 (unary)]
+    NOTEQUAL       [reduce using rule 61 (unary)]
+    LESSTHAN       [reduce using rule 61 (unary)]
+    GREATERTHAN    [reduce using rule 61 (unary)]
+    LESSTHANEQ     [reduce using rule 61 (unary)]
+    GREATERTHANEQ  [reduce using rule 61 (unary)]
+    AND            [reduce using rule 61 (unary)]
+    OR             [reduce using rule 61 (unary)]
+    LPAREN         [reduce using rule 61 (unary)]
+    $default       reduce using rule 61 (unary)
+
+
+State 49
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   62 unary: NOT expr •
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 62 (unary)]
+    MINUS          [reduce using rule 62 (unary)]
+    STAR           [reduce using rule 62 (unary)]
+    SLASH          [reduce using rule 62 (unary)]
+    PERCENT        [reduce using rule 62 (unary)]
+    EQUAL          [reduce using rule 62 (unary)]
+    NOTEQUAL       [reduce using rule 62 (unary)]
+    LESSTHAN       [reduce using rule 62 (unary)]
+    GREATERTHAN    [reduce using rule 62 (unary)]
+    LESSTHANEQ     [reduce using rule 62 (unary)]
+    GREATERTHANEQ  [reduce using rule 62 (unary)]
+    AND            [reduce using rule 62 (unary)]
+    OR             [reduce using rule 62 (unary)]
+    LPAREN         [reduce using rule 62 (unary)]
+    $default       reduce using rule 62 (unary)
+
+
+State 50
+
+   30 if: IF expr • THEN listStatement optionalElseStatement END IF
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    THEN           shift, and go to state 77
+    LPAREN         shift, and go to state 72
+
+
+State 51
+
+   35 while: WHILE expr • listStatement WEND
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 78
+    MINUS          shift, and go to state 79
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    NOT            shift, and go to state 12
+    IDENTIFIER     shift, and go to state 13
+    STR            shift, and go to state 14
+    CHAR           shift, and go to state 15
+    BIN            shift, and go to state 16
+    HEX            shift, and go to state 17
+    DEC            shift, and go to state 18
+    TRUE           shift, and go to state 19
+    FALSE          shift, and go to state 20
+    IF             shift, and go to state 21
+    WHILE          shift, and go to state 22
+    DO             shift, and go to state 23
+    BREAK          shift, and go to state 24
+    LPAREN         shift, and go to state 80
+    DIM            shift, and go to state 26
+
+    $default  reduce using rule 31 (listStatement)
+
+    statement      go to state 29
+    var            go to state 30
+    if             go to state 31
+    listStatement  go to state 81
+    while          go to state 33
+    do             go to state 34
+    break          go to state 35
+    expression     go to state 36
+    expr           go to state 37
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 52
+
+   36 do: DO listStatement • LOOP WHILE expr
+   37   | DO listStatement • LOOP UNTIL expr
+
+    LOOP  shift, and go to state 82
+
+
+State 53
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   63 braces: LPAREN expr • RPAREN
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+    RPAREN         shift, and go to state 83
+
+
+State 54
+
+   28 listIdentifier: IDENTIFIER •
+   29               | IDENTIFIER • COMMA listIdentifier
+
+    COMMA  shift, and go to state 84
+
+    $default  reduce using rule 28 (listIdentifier)
+
+
+State 55
+
+   27 var: DIM listIdentifier • AS typeRef
+
+    AS  shift, and go to state 85
+
+
+State 56
+
+   32 listStatement: statement listStatement •
+
+    $default  reduce using rule 32 (listStatement)
+
+
+State 57
+
+    6 funcBody: listStatement END • FUNCTION
+
+    FUNCTION  shift, and go to state 86
+
+
+State 58
+
+   47 binary: expr PLUS • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 87
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 59
+
+   48 binary: expr MINUS • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 88
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 60
+
+   49 binary: expr STAR • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 89
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 61
+
+   50 binary: expr SLASH • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 90
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 62
+
+   51 binary: expr PERCENT • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 91
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 63
+
+   46 binary: expr EQUAL • expr
+   52       | expr EQUAL • EQUAL expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    EQUAL       shift, and go to state 92
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 93
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 64
+
+   53 binary: expr NOTEQUAL • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 94
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 65
+
+   54 binary: expr LESSTHAN • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 95
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 66
+
+   55 binary: expr GREATERTHAN • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 96
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 67
+
+   56 binary: expr LESSTHANEQ • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 97
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 68
+
+   57 binary: expr GREATERTHANEQ • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 98
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 69
+
+   58 binary: expr AND • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 99
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 70
+
+   59 binary: expr OR • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 100
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 71
+
+   39 expression: expr SEMICOLON •
+
+    $default  reduce using rule 39 (expression)
+
+
+State 72
+
+   64 callOrIndexer: expr LPAREN • optionalListExpr RPAREN
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    $default  reduce using rule 66 (optionalListExpr)
+
+    expr              go to state 101
+    binary            go to state 38
+    unary             go to state 39
+    braces            go to state 40
+    callOrIndexer     go to state 41
+    optionalListExpr  go to state 102
+    listExpr          go to state 103
+    place             go to state 42
+    literal           go to state 43
+
+
+State 73
+
+   14 optionalTypeRef: AS • typeRef
+
+    IDENTIFIER  shift, and go to state 104
+    TYPEDEF     shift, and go to state 105
+
+    typeRef  go to state 106
+    builtin  go to state 107
+    custom   go to state 108
+    array    go to state 109
+
+
+State 74
+
+   12 argDef: IDENTIFIER optionalTypeRef •
+
+    $default  reduce using rule 12 (argDef)
+
+
+State 75
+
+    8 funcArgsInfo: LPAREN listArgDef RPAREN • optionalTypeRef
+
+    AS  shift, and go to state 73
+
+    $default  reduce using rule 13 (optionalTypeRef)
+
+    optionalTypeRef  go to state 110
+
+
+State 76
+
+   11 listArgDef: argDef COMMA • listArgDef
+
+    IDENTIFIER  shift, and go to state 44
+
+    $default  reduce using rule 9 (listArgDef)
+
+    listArgDef  go to state 111
+    argDef      go to state 46
+
+
+State 77
+
+   30 if: IF expr THEN • listStatement optionalElseStatement END IF
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    IF          shift, and go to state 21
+    WHILE       shift, and go to state 22
+    DO          shift, and go to state 23
+    BREAK       shift, and go to state 24
+    LPAREN      shift, and go to state 25
+    DIM         shift, and go to state 26
+
+    $default  reduce using rule 31 (listStatement)
+
+    statement      go to state 29
+    var            go to state 30
+    if             go to state 31
+    listStatement  go to state 112
+    while          go to state 33
+    do             go to state 34
+    break          go to state 35
+    expression     go to state 36
+    expr           go to state 37
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 78
+
+   47 binary: expr PLUS • expr
+   60 unary: PLUS • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 113
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 79
+
+   48 binary: expr MINUS • expr
+   61 unary: MINUS • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 114
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 80
+
+   63 braces: LPAREN • expr RPAREN
+   64 callOrIndexer: expr LPAREN • optionalListExpr RPAREN
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    $default  reduce using rule 66 (optionalListExpr)
+
+    expr              go to state 115
+    binary            go to state 38
+    unary             go to state 39
+    braces            go to state 40
+    callOrIndexer     go to state 41
+    optionalListExpr  go to state 102
+    listExpr          go to state 103
+    place             go to state 42
+    literal           go to state 43
+
+
+State 81
+
+   35 while: WHILE expr listStatement • WEND
+
+    WEND  shift, and go to state 116
+
+
+State 82
+
+   36 do: DO listStatement LOOP • WHILE expr
+   37   | DO listStatement LOOP • UNTIL expr
+
+    WHILE  shift, and go to state 117
+    UNTIL  shift, and go to state 118
+
+
+State 83
+
+   63 braces: LPAREN expr RPAREN •
+
+    $default  reduce using rule 63 (braces)
+
+
+State 84
+
+   29 listIdentifier: IDENTIFIER COMMA • listIdentifier
+
+    IDENTIFIER  shift, and go to state 54
+
+    listIdentifier  go to state 119
+
+
+State 85
+
+   27 var: DIM listIdentifier AS • typeRef
+
+    IDENTIFIER  shift, and go to state 104
+    TYPEDEF     shift, and go to state 105
+
+    typeRef  go to state 120
+    builtin  go to state 107
+    custom   go to state 108
+    array    go to state 109
+
+
+State 86
+
+    6 funcBody: listStatement END FUNCTION •
+
+    $default  reduce using rule 6 (funcBody)
+
+
+State 87
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   47       | expr PLUS expr •
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 47 (binary)]
+    MINUS          [reduce using rule 47 (binary)]
+    STAR           [reduce using rule 47 (binary)]
+    SLASH          [reduce using rule 47 (binary)]
+    PERCENT        [reduce using rule 47 (binary)]
+    EQUAL          [reduce using rule 47 (binary)]
+    NOTEQUAL       [reduce using rule 47 (binary)]
+    LESSTHAN       [reduce using rule 47 (binary)]
+    GREATERTHAN    [reduce using rule 47 (binary)]
+    LESSTHANEQ     [reduce using rule 47 (binary)]
+    GREATERTHANEQ  [reduce using rule 47 (binary)]
+    AND            [reduce using rule 47 (binary)]
+    OR             [reduce using rule 47 (binary)]
+    LPAREN         [reduce using rule 47 (binary)]
+    $default       reduce using rule 47 (binary)
+
+
+State 88
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   48       | expr MINUS expr •
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 48 (binary)]
+    MINUS          [reduce using rule 48 (binary)]
+    STAR           [reduce using rule 48 (binary)]
+    SLASH          [reduce using rule 48 (binary)]
+    PERCENT        [reduce using rule 48 (binary)]
+    EQUAL          [reduce using rule 48 (binary)]
+    NOTEQUAL       [reduce using rule 48 (binary)]
+    LESSTHAN       [reduce using rule 48 (binary)]
+    GREATERTHAN    [reduce using rule 48 (binary)]
+    LESSTHANEQ     [reduce using rule 48 (binary)]
+    GREATERTHANEQ  [reduce using rule 48 (binary)]
+    AND            [reduce using rule 48 (binary)]
+    OR             [reduce using rule 48 (binary)]
+    LPAREN         [reduce using rule 48 (binary)]
+    $default       reduce using rule 48 (binary)
+
+
+State 89
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   49       | expr STAR expr •
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 49 (binary)]
+    MINUS          [reduce using rule 49 (binary)]
+    STAR           [reduce using rule 49 (binary)]
+    SLASH          [reduce using rule 49 (binary)]
+    PERCENT        [reduce using rule 49 (binary)]
+    EQUAL          [reduce using rule 49 (binary)]
+    NOTEQUAL       [reduce using rule 49 (binary)]
+    LESSTHAN       [reduce using rule 49 (binary)]
+    GREATERTHAN    [reduce using rule 49 (binary)]
+    LESSTHANEQ     [reduce using rule 49 (binary)]
+    GREATERTHANEQ  [reduce using rule 49 (binary)]
+    AND            [reduce using rule 49 (binary)]
+    OR             [reduce using rule 49 (binary)]
+    LPAREN         [reduce using rule 49 (binary)]
+    $default       reduce using rule 49 (binary)
+
+
+State 90
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   50       | expr SLASH expr •
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 50 (binary)]
+    MINUS          [reduce using rule 50 (binary)]
+    STAR           [reduce using rule 50 (binary)]
+    SLASH          [reduce using rule 50 (binary)]
+    PERCENT        [reduce using rule 50 (binary)]
+    EQUAL          [reduce using rule 50 (binary)]
+    NOTEQUAL       [reduce using rule 50 (binary)]
+    LESSTHAN       [reduce using rule 50 (binary)]
+    GREATERTHAN    [reduce using rule 50 (binary)]
+    LESSTHANEQ     [reduce using rule 50 (binary)]
+    GREATERTHANEQ  [reduce using rule 50 (binary)]
+    AND            [reduce using rule 50 (binary)]
+    OR             [reduce using rule 50 (binary)]
+    LPAREN         [reduce using rule 50 (binary)]
+    $default       reduce using rule 50 (binary)
+
+
+State 91
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   51       | expr PERCENT expr •
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 51 (binary)]
+    MINUS          [reduce using rule 51 (binary)]
+    STAR           [reduce using rule 51 (binary)]
+    SLASH          [reduce using rule 51 (binary)]
+    PERCENT        [reduce using rule 51 (binary)]
+    EQUAL          [reduce using rule 51 (binary)]
+    NOTEQUAL       [reduce using rule 51 (binary)]
+    LESSTHAN       [reduce using rule 51 (binary)]
+    GREATERTHAN    [reduce using rule 51 (binary)]
+    LESSTHANEQ     [reduce using rule 51 (binary)]
+    GREATERTHANEQ  [reduce using rule 51 (binary)]
+    AND            [reduce using rule 51 (binary)]
+    OR             [reduce using rule 51 (binary)]
+    LPAREN         [reduce using rule 51 (binary)]
+    $default       reduce using rule 51 (binary)
+
+
+State 92
+
+   52 binary: expr EQUAL EQUAL • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 121
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 93
+
+   46 binary: expr • EQUAL expr
+   46       | expr EQUAL expr •
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 46 (binary)]
+    MINUS          [reduce using rule 46 (binary)]
+    STAR           [reduce using rule 46 (binary)]
+    SLASH          [reduce using rule 46 (binary)]
+    PERCENT        [reduce using rule 46 (binary)]
+    EQUAL          [reduce using rule 46 (binary)]
+    NOTEQUAL       [reduce using rule 46 (binary)]
+    LESSTHAN       [reduce using rule 46 (binary)]
+    GREATERTHAN    [reduce using rule 46 (binary)]
+    LESSTHANEQ     [reduce using rule 46 (binary)]
+    GREATERTHANEQ  [reduce using rule 46 (binary)]
+    AND            [reduce using rule 46 (binary)]
+    OR             [reduce using rule 46 (binary)]
+    LPAREN         [reduce using rule 46 (binary)]
+    $default       reduce using rule 46 (binary)
+
+
+State 94
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   53       | expr NOTEQUAL expr •
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 53 (binary)]
+    MINUS          [reduce using rule 53 (binary)]
+    STAR           [reduce using rule 53 (binary)]
+    SLASH          [reduce using rule 53 (binary)]
+    PERCENT        [reduce using rule 53 (binary)]
+    EQUAL          [reduce using rule 53 (binary)]
+    NOTEQUAL       [reduce using rule 53 (binary)]
+    LESSTHAN       [reduce using rule 53 (binary)]
+    GREATERTHAN    [reduce using rule 53 (binary)]
+    LESSTHANEQ     [reduce using rule 53 (binary)]
+    GREATERTHANEQ  [reduce using rule 53 (binary)]
+    AND            [reduce using rule 53 (binary)]
+    OR             [reduce using rule 53 (binary)]
+    LPAREN         [reduce using rule 53 (binary)]
+    $default       reduce using rule 53 (binary)
+
+
+State 95
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   54       | expr LESSTHAN expr •
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 54 (binary)]
+    MINUS          [reduce using rule 54 (binary)]
+    STAR           [reduce using rule 54 (binary)]
+    SLASH          [reduce using rule 54 (binary)]
+    PERCENT        [reduce using rule 54 (binary)]
+    EQUAL          [reduce using rule 54 (binary)]
+    NOTEQUAL       [reduce using rule 54 (binary)]
+    LESSTHAN       [reduce using rule 54 (binary)]
+    GREATERTHAN    [reduce using rule 54 (binary)]
+    LESSTHANEQ     [reduce using rule 54 (binary)]
+    GREATERTHANEQ  [reduce using rule 54 (binary)]
+    AND            [reduce using rule 54 (binary)]
+    OR             [reduce using rule 54 (binary)]
+    LPAREN         [reduce using rule 54 (binary)]
+    $default       reduce using rule 54 (binary)
+
+
+State 96
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   55       | expr GREATERTHAN expr •
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 55 (binary)]
+    MINUS          [reduce using rule 55 (binary)]
+    STAR           [reduce using rule 55 (binary)]
+    SLASH          [reduce using rule 55 (binary)]
+    PERCENT        [reduce using rule 55 (binary)]
+    EQUAL          [reduce using rule 55 (binary)]
+    NOTEQUAL       [reduce using rule 55 (binary)]
+    LESSTHAN       [reduce using rule 55 (binary)]
+    GREATERTHAN    [reduce using rule 55 (binary)]
+    LESSTHANEQ     [reduce using rule 55 (binary)]
+    GREATERTHANEQ  [reduce using rule 55 (binary)]
+    AND            [reduce using rule 55 (binary)]
+    OR             [reduce using rule 55 (binary)]
+    LPAREN         [reduce using rule 55 (binary)]
+    $default       reduce using rule 55 (binary)
+
+
+State 97
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   56       | expr LESSTHANEQ expr •
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 56 (binary)]
+    MINUS          [reduce using rule 56 (binary)]
+    STAR           [reduce using rule 56 (binary)]
+    SLASH          [reduce using rule 56 (binary)]
+    PERCENT        [reduce using rule 56 (binary)]
+    EQUAL          [reduce using rule 56 (binary)]
+    NOTEQUAL       [reduce using rule 56 (binary)]
+    LESSTHAN       [reduce using rule 56 (binary)]
+    GREATERTHAN    [reduce using rule 56 (binary)]
+    LESSTHANEQ     [reduce using rule 56 (binary)]
+    GREATERTHANEQ  [reduce using rule 56 (binary)]
+    AND            [reduce using rule 56 (binary)]
+    OR             [reduce using rule 56 (binary)]
+    LPAREN         [reduce using rule 56 (binary)]
+    $default       reduce using rule 56 (binary)
+
+
+State 98
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   57       | expr GREATERTHANEQ expr •
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 57 (binary)]
+    MINUS          [reduce using rule 57 (binary)]
+    STAR           [reduce using rule 57 (binary)]
+    SLASH          [reduce using rule 57 (binary)]
+    PERCENT        [reduce using rule 57 (binary)]
+    EQUAL          [reduce using rule 57 (binary)]
+    NOTEQUAL       [reduce using rule 57 (binary)]
+    LESSTHAN       [reduce using rule 57 (binary)]
+    GREATERTHAN    [reduce using rule 57 (binary)]
+    LESSTHANEQ     [reduce using rule 57 (binary)]
+    GREATERTHANEQ  [reduce using rule 57 (binary)]
+    AND            [reduce using rule 57 (binary)]
+    OR             [reduce using rule 57 (binary)]
+    LPAREN         [reduce using rule 57 (binary)]
+    $default       reduce using rule 57 (binary)
+
+
+State 99
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   58       | expr AND expr •
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 58 (binary)]
+    MINUS          [reduce using rule 58 (binary)]
+    STAR           [reduce using rule 58 (binary)]
+    SLASH          [reduce using rule 58 (binary)]
+    PERCENT        [reduce using rule 58 (binary)]
+    EQUAL          [reduce using rule 58 (binary)]
+    NOTEQUAL       [reduce using rule 58 (binary)]
+    LESSTHAN       [reduce using rule 58 (binary)]
+    GREATERTHAN    [reduce using rule 58 (binary)]
+    LESSTHANEQ     [reduce using rule 58 (binary)]
+    GREATERTHANEQ  [reduce using rule 58 (binary)]
+    AND            [reduce using rule 58 (binary)]
+    OR             [reduce using rule 58 (binary)]
+    LPAREN         [reduce using rule 58 (binary)]
+    $default       reduce using rule 58 (binary)
+
+
+State 100
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   59       | expr OR expr •
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 59 (binary)]
+    MINUS          [reduce using rule 59 (binary)]
+    STAR           [reduce using rule 59 (binary)]
+    SLASH          [reduce using rule 59 (binary)]
+    PERCENT        [reduce using rule 59 (binary)]
+    EQUAL          [reduce using rule 59 (binary)]
+    NOTEQUAL       [reduce using rule 59 (binary)]
+    LESSTHAN       [reduce using rule 59 (binary)]
+    GREATERTHAN    [reduce using rule 59 (binary)]
+    LESSTHANEQ     [reduce using rule 59 (binary)]
+    GREATERTHANEQ  [reduce using rule 59 (binary)]
+    AND            [reduce using rule 59 (binary)]
+    OR             [reduce using rule 59 (binary)]
+    LPAREN         [reduce using rule 59 (binary)]
+    $default       reduce using rule 59 (binary)
+
+
+State 101
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+   67 listExpr: expr • COMMA listExpr
+   68         | expr •
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    COMMA          shift, and go to state 122
+    LPAREN         shift, and go to state 72
+
+    $default  reduce using rule 68 (listExpr)
+
+
+State 102
+
+   64 callOrIndexer: expr LPAREN optionalListExpr • RPAREN
+
+    RPAREN  shift, and go to state 123
+
+
+State 103
+
+   65 optionalListExpr: listExpr •
+
+    $default  reduce using rule 65 (optionalListExpr)
+
+
+State 104
+
+   19 custom: IDENTIFIER •
+
+    $default  reduce using rule 19 (custom)
+
+
+State 105
+
+   18 builtin: TYPEDEF •
+
+    $default  reduce using rule 18 (builtin)
+
+
+State 106
+
+   14 optionalTypeRef: AS typeRef •
+   20 array: typeRef • ARRAY_COMMAS
+
+    ARRAY_COMMAS  shift, and go to state 124
+
+    $default  reduce using rule 14 (optionalTypeRef)
+
+
+State 107
+
+   15 typeRef: builtin •
+
+    $default  reduce using rule 15 (typeRef)
+
+
+State 108
+
+   16 typeRef: custom •
+
+    $default  reduce using rule 16 (typeRef)
+
+
+State 109
+
+   17 typeRef: array •
+
+    $default  reduce using rule 17 (typeRef)
+
+
+State 110
+
+    8 funcArgsInfo: LPAREN listArgDef RPAREN optionalTypeRef •
+
+    $default  reduce using rule 8 (funcArgsInfo)
+
+
+State 111
+
+   11 listArgDef: argDef COMMA listArgDef •
+
+    $default  reduce using rule 11 (listArgDef)
+
+
+State 112
+
+   30 if: IF expr THEN listStatement • optionalElseStatement END IF
+
+    ELSE  shift, and go to state 125
+
+    $default  reduce using rule 33 (optionalElseStatement)
+
+    optionalElseStatement  go to state 126
+
+
+State 113
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   47       | expr PLUS expr •
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   60 unary: PLUS expr •
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 47 (binary)]
+    PLUS           [reduce using rule 60 (unary)]
+    MINUS          [reduce using rule 47 (binary)]
+    MINUS          [reduce using rule 60 (unary)]
+    STAR           [reduce using rule 47 (binary)]
+    STAR           [reduce using rule 60 (unary)]
+    SLASH          [reduce using rule 47 (binary)]
+    SLASH          [reduce using rule 60 (unary)]
+    PERCENT        [reduce using rule 47 (binary)]
+    PERCENT        [reduce using rule 60 (unary)]
+    EQUAL          [reduce using rule 47 (binary)]
+    EQUAL          [reduce using rule 60 (unary)]
+    NOTEQUAL       [reduce using rule 47 (binary)]
+    NOTEQUAL       [reduce using rule 60 (unary)]
+    LESSTHAN       [reduce using rule 47 (binary)]
+    LESSTHAN       [reduce using rule 60 (unary)]
+    GREATERTHAN    [reduce using rule 47 (binary)]
+    GREATERTHAN    [reduce using rule 60 (unary)]
+    LESSTHANEQ     [reduce using rule 47 (binary)]
+    LESSTHANEQ     [reduce using rule 60 (unary)]
+    GREATERTHANEQ  [reduce using rule 47 (binary)]
+    GREATERTHANEQ  [reduce using rule 60 (unary)]
+    AND            [reduce using rule 47 (binary)]
+    AND            [reduce using rule 60 (unary)]
+    OR             [reduce using rule 47 (binary)]
+    OR             [reduce using rule 60 (unary)]
+    SEMICOLON      reduce using rule 60 (unary)
+    LPAREN         [reduce using rule 47 (binary)]
+    LPAREN         [reduce using rule 60 (unary)]
+    $default       reduce using rule 47 (binary)
+
+
+State 114
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   48       | expr MINUS expr •
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   61 unary: MINUS expr •
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 48 (binary)]
+    PLUS           [reduce using rule 61 (unary)]
+    MINUS          [reduce using rule 48 (binary)]
+    MINUS          [reduce using rule 61 (unary)]
+    STAR           [reduce using rule 48 (binary)]
+    STAR           [reduce using rule 61 (unary)]
+    SLASH          [reduce using rule 48 (binary)]
+    SLASH          [reduce using rule 61 (unary)]
+    PERCENT        [reduce using rule 48 (binary)]
+    PERCENT        [reduce using rule 61 (unary)]
+    EQUAL          [reduce using rule 48 (binary)]
+    EQUAL          [reduce using rule 61 (unary)]
+    NOTEQUAL       [reduce using rule 48 (binary)]
+    NOTEQUAL       [reduce using rule 61 (unary)]
+    LESSTHAN       [reduce using rule 48 (binary)]
+    LESSTHAN       [reduce using rule 61 (unary)]
+    GREATERTHAN    [reduce using rule 48 (binary)]
+    GREATERTHAN    [reduce using rule 61 (unary)]
+    LESSTHANEQ     [reduce using rule 48 (binary)]
+    LESSTHANEQ     [reduce using rule 61 (unary)]
+    GREATERTHANEQ  [reduce using rule 48 (binary)]
+    GREATERTHANEQ  [reduce using rule 61 (unary)]
+    AND            [reduce using rule 48 (binary)]
+    AND            [reduce using rule 61 (unary)]
+    OR             [reduce using rule 48 (binary)]
+    OR             [reduce using rule 61 (unary)]
+    SEMICOLON      reduce using rule 61 (unary)
+    LPAREN         [reduce using rule 48 (binary)]
+    LPAREN         [reduce using rule 61 (unary)]
+    $default       reduce using rule 48 (binary)
+
+
+State 115
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   63 braces: LPAREN expr • RPAREN
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+   67 listExpr: expr • COMMA listExpr
+   68         | expr •
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    COMMA          shift, and go to state 122
+    LPAREN         shift, and go to state 72
+    RPAREN         shift, and go to state 83
+
+    RPAREN  [reduce using rule 68 (listExpr)]
+
+
+State 116
+
+   35 while: WHILE expr listStatement WEND •
+
+    $default  reduce using rule 35 (while)
+
+
+State 117
+
+   36 do: DO listStatement LOOP WHILE • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 127
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 118
+
+   37 do: DO listStatement LOOP UNTIL • expr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 128
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 119
+
+   29 listIdentifier: IDENTIFIER COMMA listIdentifier •
+
+    $default  reduce using rule 29 (listIdentifier)
+
+
+State 120
+
+   20 array: typeRef • ARRAY_COMMAS
+   27 var: DIM listIdentifier AS typeRef •
+
+    ARRAY_COMMAS  shift, and go to state 124
+
+    $default  reduce using rule 27 (var)
+
+
+State 121
+
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   52       | expr EQUAL EQUAL expr •
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS           [reduce using rule 52 (binary)]
+    MINUS          [reduce using rule 52 (binary)]
+    STAR           [reduce using rule 52 (binary)]
+    SLASH          [reduce using rule 52 (binary)]
+    PERCENT        [reduce using rule 52 (binary)]
+    EQUAL          [reduce using rule 52 (binary)]
+    NOTEQUAL       [reduce using rule 52 (binary)]
+    LESSTHAN       [reduce using rule 52 (binary)]
+    GREATERTHAN    [reduce using rule 52 (binary)]
+    LESSTHANEQ     [reduce using rule 52 (binary)]
+    GREATERTHANEQ  [reduce using rule 52 (binary)]
+    AND            [reduce using rule 52 (binary)]
+    OR             [reduce using rule 52 (binary)]
+    LPAREN         [reduce using rule 52 (binary)]
+    $default       reduce using rule 52 (binary)
+
+
+State 122
+
+   67 listExpr: expr COMMA • listExpr
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    LPAREN      shift, and go to state 25
+
+    expr           go to state 101
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    listExpr       go to state 129
+    place          go to state 42
+    literal        go to state 43
+
+
+State 123
+
+   64 callOrIndexer: expr LPAREN optionalListExpr RPAREN •
+
+    $default  reduce using rule 64 (callOrIndexer)
+
+
+State 124
+
+   20 array: typeRef ARRAY_COMMAS •
+
+    $default  reduce using rule 20 (array)
+
+
+State 125
+
+   34 optionalElseStatement: ELSE • statement listStatement
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    IF          shift, and go to state 21
+    WHILE       shift, and go to state 22
+    DO          shift, and go to state 23
+    BREAK       shift, and go to state 24
+    LPAREN      shift, and go to state 25
+    DIM         shift, and go to state 26
+
+    statement      go to state 130
+    var            go to state 30
+    if             go to state 31
+    while          go to state 33
+    do             go to state 34
+    break          go to state 35
+    expression     go to state 36
+    expr           go to state 37
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 126
+
+   30 if: IF expr THEN listStatement optionalElseStatement • END IF
+
+    END  shift, and go to state 131
+
+
+State 127
+
+   36 do: DO listStatement LOOP WHILE expr •
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS      [reduce using rule 36 (do)]
+    MINUS     [reduce using rule 36 (do)]
+    LPAREN    [reduce using rule 36 (do)]
+    $default  reduce using rule 36 (do)
+
+
+State 128
+
+   37 do: DO listStatement LOOP UNTIL expr •
+   46 binary: expr • EQUAL expr
+   47       | expr • PLUS expr
+   48       | expr • MINUS expr
+   49       | expr • STAR expr
+   50       | expr • SLASH expr
+   51       | expr • PERCENT expr
+   52       | expr • EQUAL EQUAL expr
+   53       | expr • NOTEQUAL expr
+   54       | expr • LESSTHAN expr
+   55       | expr • GREATERTHAN expr
+   56       | expr • LESSTHANEQ expr
+   57       | expr • GREATERTHANEQ expr
+   58       | expr • AND expr
+   59       | expr • OR expr
+   64 callOrIndexer: expr • LPAREN optionalListExpr RPAREN
+
+    PLUS           shift, and go to state 58
+    MINUS          shift, and go to state 59
+    STAR           shift, and go to state 60
+    SLASH          shift, and go to state 61
+    PERCENT        shift, and go to state 62
+    EQUAL          shift, and go to state 63
+    NOTEQUAL       shift, and go to state 64
+    LESSTHAN       shift, and go to state 65
+    GREATERTHAN    shift, and go to state 66
+    LESSTHANEQ     shift, and go to state 67
+    GREATERTHANEQ  shift, and go to state 68
+    AND            shift, and go to state 69
+    OR             shift, and go to state 70
+    LPAREN         shift, and go to state 72
+
+    PLUS      [reduce using rule 37 (do)]
+    MINUS     [reduce using rule 37 (do)]
+    LPAREN    [reduce using rule 37 (do)]
+    $default  reduce using rule 37 (do)
+
+
+State 129
+
+   67 listExpr: expr COMMA listExpr •
+
+    $default  reduce using rule 67 (listExpr)
+
+
+State 130
+
+   34 optionalElseStatement: ELSE statement • listStatement
+
+    PLUS        shift, and go to state 10
+    MINUS       shift, and go to state 11
+    NOT         shift, and go to state 12
+    IDENTIFIER  shift, and go to state 13
+    STR         shift, and go to state 14
+    CHAR        shift, and go to state 15
+    BIN         shift, and go to state 16
+    HEX         shift, and go to state 17
+    DEC         shift, and go to state 18
+    TRUE        shift, and go to state 19
+    FALSE       shift, and go to state 20
+    IF          shift, and go to state 21
+    WHILE       shift, and go to state 22
+    DO          shift, and go to state 23
+    BREAK       shift, and go to state 24
+    LPAREN      shift, and go to state 25
+    DIM         shift, and go to state 26
+
+    $default  reduce using rule 31 (listStatement)
+
+    statement      go to state 29
+    var            go to state 30
+    if             go to state 31
+    listStatement  go to state 132
+    while          go to state 33
+    do             go to state 34
+    break          go to state 35
+    expression     go to state 36
+    expr           go to state 37
+    binary         go to state 38
+    unary          go to state 39
+    braces         go to state 40
+    callOrIndexer  go to state 41
+    place          go to state 42
+    literal        go to state 43
+
+
+State 131
+
+   30 if: IF expr THEN listStatement optionalElseStatement END • IF
+
+    IF  shift, and go to state 133
+
+
+State 132
+
+   34 optionalElseStatement: ELSE statement listStatement •
+
+    $default  reduce using rule 34 (optionalElseStatement)
+
+
+State 133
+
+   30 if: IF expr THEN listStatement optionalElseStatement END IF •
+
+    $default  reduce using rule 30 (if)

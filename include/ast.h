@@ -12,7 +12,7 @@ void destroy_ast(Ast* ast);
 
 AstNode* ast_create_node(Ast* ast, char* name, char* value, AstNode* left, AstNode* right);
 
-char* ast_to_gml(Ast* ast);
+char* ast_to_md(Ast* ast);
 
 struct AstNode {
   int id;

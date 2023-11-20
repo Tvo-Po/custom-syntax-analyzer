@@ -1,6 +1,9 @@
 %{
   #include <stddef.h>
+  #define YYDEBUG 1
 %}
+
+%error-verbose
 
 %code requires {
   #include "ast.h"
@@ -36,6 +39,8 @@
 %type <node> expr
 %type <node> typeRef
 %type <node> funcSignature
+%type <node> funcArgsInfo
+%type <node> optionalFuncBody
 %type <node> funcBody
 %type <node> argDef
 %type <node> sourceItem
@@ -67,28 +72,33 @@
 
 %%
 /* SourceItem */
-source: {{$$ = NULL;}}
-    | source sourceItem {{
+source: %empty {{$$ = NULL;}}
+    | sourceItem source {{
         ast->head = ast_create_node(ast, "source", "", $1, $2);
         $$ = ast->head;
     }};
 
-sourceItem: FUNCTION funcSignature funcBody {{$$ = ast_create_node(ast, "sourceItem", "", $1, $2);}};
+sourceItem: FUNCTION funcSignature optionalFuncBody {{$$ = ast_create_node(ast, "sourceItem", "", $2, $3);}};
 
-funcBody: listStatement END FUNCTION {{$$ = ast_create_node(ast, "funcBody", "", $1, $2);}};
+optionalFuncBody: %empty {{$$ = NULL;}}
+    | funcBody {{$$ = $1;}};
+
+funcBody: listStatement END FUNCTION {{$$ = ast_create_node(ast, "funcBody", "", $1, NULL);}};
 
 
 /* FuncSignature */
-funcSignature: IDENTIFIER LPAREN listArgDef RPAREN optionalTypeRef {{$$ = ast_create_node(ast, "funcSignature", "", $3, $5);}};
+funcSignature: IDENTIFIER funcArgsInfo {{$$ = ast_create_node(ast, "funcSignature", "", $1, $2);}};
 
-listArgDef:  {{$$ = NULL;}}
+funcArgsInfo: LPAREN listArgDef RPAREN optionalTypeRef {{$$ = ast_create_node(ast, "funcArgsInfo", "", $2, $4);}};
+
+listArgDef: %empty {{$$ = NULL;}}
     | argDef {{$$ = $1;}}
     | argDef COMMA listArgDef {{$$ = ast_create_node(ast, "listArgDef", "", $1, $3);}};
 
 argDef: IDENTIFIER optionalTypeRef {{$$ = ast_create_node(ast, "argDef", "", $1, $2);}};
 
-optionalTypeRef: {{$$ = NULL;}}
-    | AS typeRef {{$$ = $1;}};
+optionalTypeRef: %empty {{$$ = NULL;}}
+    | AS typeRef {{$$ = $2;}};
 
 
 /* TypeRef */
@@ -120,10 +130,10 @@ if: IF expr THEN listStatement optionalElseStatement END IF {{
     $$ = ast_create_node(ast, "if", "", $2, ast_create_node(ast, "ifStatements", "", $4, $5));
   }};
 
-listStatement: {{$$ = NULL;}}
+listStatement: %empty {{$$ = NULL;}}
     | statement listStatement {{$$ = ast_create_node(ast, "listStatement", "", $1, $2);}};
 
-optionalElseStatement: {{$$ = NULL;}}
+optionalElseStatement: %empty {{$$ = NULL;}}
     | ELSE statement listStatement {{$$ = ast_create_node(ast, "else", "", $2, $3);}};
 
 while: WHILE expr listStatement WEND {{$$ = ast_create_node(ast, "while", "", $2, $3);}};
@@ -165,10 +175,10 @@ unary: PLUS expr {{$$ = ast_create_node(ast, "PLUS", "", $2, NULL);}}
 
 braces: LPAREN expr RPAREN  {{$$ = ast_create_node(ast, "braces", "", $2, NULL);}};
 
-callOrIndexer: IDENTIFIER LPAREN optionalListExpr RPAREN  {{$$ = ast_create_node(ast, "CALLORINDEXER", "", $1, $3);}};
+callOrIndexer: expr LPAREN optionalListExpr RPAREN  {{$$ = ast_create_node(ast, "CALLORINDEXER", "", $1, $3);}};
 
-optionalListExpr: listExpr  {{$$ = ast_create_node(ast, "optionalListExpr", "", $1, NULL);}}
-    | {{$$ = ast_create_node(ast, "optionalListExpr", "", NULL, NULL);}};
+optionalListExpr: listExpr{{$$ = ast_create_node(ast, "optionalListExpr", "", $1, NULL);}}
+    | %empty {{$$ = ast_create_node(ast, "optionalListExpr", "", NULL, NULL);}};
 
 listExpr: expr COMMA listExpr {{$$ = ast_create_node(ast, "listExpr", "", $1, $3);}}
     | expr {{$$ = ast_create_node(ast, "listExpr", "", $1, NULL);}};

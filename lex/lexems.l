@@ -1,7 +1,7 @@
 %{
 #include <string.h>
 #include "parser.tab.h"
-#define YY_DECL int yylex(YYSTYPE* yylval, Ast* ast)
+#define YY_DECL int yylex(YYSTYPE* yylval_param, Ast* ast)
 %}
 
 
@@ -191,6 +191,10 @@
 \/\/.*                               { /* Пропустить комментарии */ }
 \n                                  { /* Пропустить переводы строк */ }
 [ \t]                               { /* Пропустить пробелы и табуляцию */ }
+.                                   {
+                                        // Обработка нераспознанных символов или ошибок
+                                        fprintf(stderr, "Нераспознанный символ: %s\n", yytext);
+                                    }
 %%
 
 
