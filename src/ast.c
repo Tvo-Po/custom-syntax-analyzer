@@ -2,14 +2,10 @@
 #include <string.h>
 #include "ast.h"
 
-AstNode* create_ast_node(Ast* ast, char* name, char* value, AstNode* left, AstNode* right) {
-  AstNode* node = malloc(sizeof(AstNode));
-  node->id = ast->counter++;
-  node->name = strcpy(malloc(sizeof(char)), name);
-  node->value = strcpy(malloc(sizeof(char)), value);
-  node->left = left;
-  node->right = right;
-  return node;
+Ast* create_ast() {
+  Ast* ast = malloc(sizeof(Ast));
+  ast->counter = 1;
+  return ast;
 }
 
 void _destroy_node(AstNode* node) {
@@ -27,4 +23,18 @@ void _destroy_node(AstNode* node) {
 void destroy_ast(Ast* ast) {
   _destroy_node(ast->head);
   free(ast);
+}
+
+AstNode* ast_create_node(Ast* ast, char* name, char* value, AstNode* left, AstNode* right) {
+  AstNode* node = malloc(sizeof(AstNode));
+  node->id = ast->counter++;
+  node->name = strcpy(malloc(sizeof(char)), name);
+  node->value = strcpy(malloc(sizeof(char)), value);
+  node->left = left;
+  node->right = right;
+  return node;
+}
+
+char* ast_to_gml(Ast* ast) {
+  return "";
 }
