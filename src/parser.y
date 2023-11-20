@@ -1,0 +1,5 @@
+%{
+  void yyerror(char* s) {
+    ...
+  }
+%}

@@ -10,7 +10,7 @@ compile: $(OBJ)
 	gcc $(OBJ) -o $(TARGET)
 
 $(PREF_OBJ)%.o: $(PREF_SRC)%.c
-	gcc -c $< -o $@
+	gcc -c $< -o $@ -I include
 
 clean:
 	rm $(TARGET) $(PREF_OBJ)*.o
