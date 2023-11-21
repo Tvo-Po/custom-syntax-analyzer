@@ -23,7 +23,7 @@ $(PREF_SRC)lexems.yy.c: ./lex/lexems.l $(PREF_SRC)$(PARSER_CODE_NAME).c
 	flex -o $(PREF_SRC)$(LEXEMS_CODE_NAME).c ./lex/lexems.l
 
 $(PREF_SRC)$(PARSER_CODE_NAME).c: ./lex/parser.y
-	bison -t -v -Wconflicts-sr --header=./include/$(PARSER_CODE_NAME).h \
+	bison -t -v --header=./include/$(PARSER_CODE_NAME).h \
 				-o $(PREF_SRC)$(PARSER_CODE_NAME).c ./lex/parser.y
 
 clean:

@@ -6,12 +6,14 @@
 #define OUTPUT_FILE "output.md"
 
 extern FILE* yyin;
+extern int yy_flex_debug;
 
 void yyerror(Ast* ast, const char* s) {
   fprintf(stderr, "%s\n", s);
 }
 
 int main() {
+  yy_flex_debug = 1;
   FILE* input = fopen(INPUT_FILE, "r");
 
   if (!input) {

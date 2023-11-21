@@ -39,9 +39,7 @@
 %type <node> expr
 %type <node> typeRef
 %type <node> funcSignature
-%type <node> funcArgsInfo
 %type <node> optionalFuncBody
-%type <node> funcBody
 %type <node> argDef
 %type <node> sourceItem
 %type <node> statement
@@ -61,7 +59,6 @@
 %type <node> literal
 %type <node> place
 %type <node> listExpr
-%type <node> optionalListExpr
 %type <node> callOrIndexer
 %type <node> braces
 %type <node> unary
@@ -73,29 +70,27 @@
 %%
 /* SourceItem */
 source: %empty {{$$ = NULL;}}
-    | sourceItem source {{
-        ast->head = ast_create_node(ast, "source", "", $1, $2);
+    | source sourceItem {{
+        ast->head = ast_create_node(ast, "Source", "", $1, $2);
         $$ = ast->head;
     }};
 
-sourceItem: FUNCTION funcSignature optionalFuncBody {{$$ = ast_create_node(ast, "sourceItem", "", $2, $3);}};
+sourceItem: FUNCTION funcSignature optionalFuncBody {{$$ = ast_create_node(ast, "Source Item", "", $2, $3);}};
 
 optionalFuncBody: %empty {{$$ = NULL;}}
-    | funcBody {{$$ = $1;}};
-
-funcBody: listStatement END FUNCTION {{$$ = ast_create_node(ast, "funcBody", "", $1, NULL);}};
+    | listStatement END FUNCTION {{$$ = ast_create_node(ast, "Function Body", "", $1, NULL);}};
 
 
 /* FuncSignature */
-funcSignature: IDENTIFIER funcArgsInfo {{$$ = ast_create_node(ast, "funcSignature", "", $1, $2);}};
-
-funcArgsInfo: LPAREN listArgDef RPAREN optionalTypeRef {{$$ = ast_create_node(ast, "funcArgsInfo", "", $2, $4);}};
+funcSignature: IDENTIFIER LPAREN listArgDef RPAREN optionalTypeRef {{
+    $$ = ast_create_node(ast, "Function Signature", $1->value, $1, $2);
+}};
 
 listArgDef: %empty {{$$ = NULL;}}
     | argDef {{$$ = $1;}}
-    | argDef COMMA listArgDef {{$$ = ast_create_node(ast, "listArgDef", "", $1, $3);}};
+    | argDef COMMA listArgDef {{$$ = ast_create_node(ast, "Function Arguments", "", $1, $3);}};
 
-argDef: IDENTIFIER optionalTypeRef {{$$ = ast_create_node(ast, "argDef", "", $1, $2);}};
+argDef: IDENTIFIER optionalTypeRef {{$$ = ast_create_node(ast, "Argument Definition", "", $1, $2);}};
 
 optionalTypeRef: %empty {{$$ = NULL;}}
     | AS typeRef {{$$ = $2;}};
@@ -110,7 +105,7 @@ builtin: TYPEDEF {{$$ = $1;}};
 
 custom: IDENTIFIER {{$$ = $1;}};
 
-array: typeRef ARRAY_COMMAS {{$$ = ast_create_node(ast, "array", $2->value, $1, NULL);}};
+array: typeRef ARRAY_COMMAS {{$$ = ast_create_node(ast, "Array", $2->value, $1, NULL);}};
 
 
 /* Statement */
@@ -121,34 +116,35 @@ statement: var {{$$ =  $1;}}
     | break {{$$ =  $1;}}
     | expression {{$$ =  $1;}};
 
-var: DIM listIdentifier AS typeRef {{$$ = ast_create_node(ast, "var", "", $2, $4);}}
+listStatement: %empty {{$$ = NULL;}}
+    | statement listStatement {{$$ = ast_create_node(ast, "Statements", "", $1, $2);}};
 
-listIdentifier: IDENTIFIER {{$$ = ast_create_node(ast, "declaredVar", "", $1, NULL);}}
-    | IDENTIFIER COMMA listIdentifier {{$$ = ast_create_node(ast, "listIdentifier", "", $1, $3);}};
+var: DIM listIdentifier AS typeRef {{$$ = ast_create_node(ast, "Variables Declaration", "", $2, $4);}}
+
+listIdentifier: %empty {{$$ = NULL;}}
+    | IDENTIFIER {{$$ = $1;}}
+    | IDENTIFIER COMMA listIdentifier {{$$ = ast_create_node(ast, "Identifiers", "", $1, $3);}};
 
 if: IF expr THEN listStatement optionalElseStatement END IF {{
-    $$ = ast_create_node(ast, "if", "", $2, ast_create_node(ast, "ifStatements", "", $4, $5));
+    $$ = ast_create_node(ast, "if", "", $2, ast_create_node(ast, "If Body", "", $4, $5));
   }};
 
-listStatement: %empty {{$$ = NULL;}}
-    | statement listStatement {{$$ = ast_create_node(ast, "listStatement", "", $1, $2);}};
-
 optionalElseStatement: %empty {{$$ = NULL;}}
-    | ELSE statement listStatement {{$$ = ast_create_node(ast, "else", "", $2, $3);}};
+    | ELSE listStatement {{$$ = ast_create_node(ast, "Else Body", "", $2, NULL);}};
 
-while: WHILE expr listStatement WEND {{$$ = ast_create_node(ast, "while", "", $2, $3);}};
+while: WHILE expr listStatement WEND {{$$ = ast_create_node(ast, "While", "", $2, $3);}};
 
-do: DO listStatement LOOP WHILE expr {{$$ = ast_create_node(ast, "dowhile", "", $2, $5);}}
-  | DO listStatement LOOP UNTIL expr {{$$ = ast_create_node(ast, "dountil", "", $2, $5);}};
+do: DO listStatement LOOP WHILE expr {{$$ = ast_create_node(ast, "Do While", "", $2, $5);}}
+  | DO listStatement LOOP UNTIL expr {{$$ = ast_create_node(ast, "Do Until", "", $2, $5);}};
 
-break: BREAK {{$$ = ast_create_node(ast, "break", "", NULL, NULL);}};
+break: BREAK {{$$ = $1;}};
 
 expression: expr SEMICOLON {{$$ = $1;}};
 
 
 /* Expr */
-expr: binary         {{$$ = $1;}}
-    | unary          {{$$ = $1;}}
+expr: unary          {{$$ = $1;}}
+    | binary         {{$$ = $1;}}
     | braces         {{$$ = $1;}}
     | callOrIndexer  {{$$ = $1;}}
     | place          {{$$ = $1;}}
@@ -173,15 +169,13 @@ unary: PLUS expr {{$$ = ast_create_node(ast, "PLUS", "", $2, NULL);}}
     | MINUS expr {{$$ = ast_create_node(ast, "MINUS", "", $2, NULL);}}
     | NOT expr {{$$ = ast_create_node(ast, "NOT", "", $2, NULL);}};
 
-braces: LPAREN expr RPAREN  {{$$ = ast_create_node(ast, "braces", "", $2, NULL);}};
+braces: LPAREN expr RPAREN  {{$$ = ast_create_node(ast, "BRACES", "", $2, NULL);}};
 
-callOrIndexer: expr LPAREN optionalListExpr RPAREN  {{$$ = ast_create_node(ast, "CALLORINDEXER", "", $1, $3);}};
+callOrIndexer: expr LPAREN listExpr RPAREN  {{$$ = ast_create_node(ast, "CALLORINDEXER", "", $1, $3);}};
 
-optionalListExpr: listExpr{{$$ = ast_create_node(ast, "optionalListExpr", "", $1, NULL);}}
-    | %empty {{$$ = ast_create_node(ast, "optionalListExpr", "", NULL, NULL);}};
-
-listExpr: expr COMMA listExpr {{$$ = ast_create_node(ast, "listExpr", "", $1, $3);}}
-    | expr {{$$ = ast_create_node(ast, "listExpr", "", $1, NULL);}};
+listExpr: expr COMMA listExpr {{$$ = ast_create_node(ast, "Expressions", "", $1, $3);}}
+    | expr {{$$ = $1;}}
+    | %empty {{$$ = NULL;}};
 
 place: IDENTIFIER {{$$ = $1;}};
 
