@@ -5,7 +5,6 @@
 #define OUTPUT_FILE "output.md"
 
 extern FILE* yyin;
-extern int yy_flex_debug;
 
 void yyerror(Ast* ast, const char* s) {
   fprintf(stderr, "[!] %s\n", s);
@@ -18,7 +17,6 @@ int main(int argc, char* argv[]) {
     printf("[!] Invalid usage: %s filename \n", argv[0]);
   }
 
-  yy_flex_debug = 1;
   FILE* input = fopen(argv[1], "r");
 
   if (!input) {
