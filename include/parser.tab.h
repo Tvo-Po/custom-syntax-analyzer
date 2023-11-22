@@ -39,13 +39,13 @@
 # define YY_YY_INCLUDE_PARSER_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 5 "./lex/parser.y"
+#line 8 "./lex/parser.y"
 
   #include "ast.h"
   
@@ -111,7 +111,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 11 "./lex/parser.y"
+#line 14 "./lex/parser.y"
 
   AstNode* node;
 

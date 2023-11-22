@@ -2,7 +2,7 @@ typedef struct Ast Ast;
 typedef struct AstNode AstNode;
 
 struct Ast {
-  int counter;
+  unsigned short int counter;
   AstNode* head;
 };
 

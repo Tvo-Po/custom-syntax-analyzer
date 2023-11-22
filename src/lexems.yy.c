@@ -535,7 +535,7 @@ char *yytext;
 #line 2 "./lex/lexems.l"
 #include <string.h>
 #include "parser.tab.h"
-#define YY_DECL int yylex(YYSTYPE* yylval_param, Ast* ast)
+#define YY_DECL int yylex(Ast* ast)
 #line 540 "./src/lexems.yy.c"
 #line 541 "./src/lexems.yy.c"
 
@@ -754,7 +754,7 @@ YY_DECL
 		}
 
 	{
-#line 8 "./lex/lexems.l"
+#line 7 "./lex/lexems.l"
 
 
 #line 761 "./src/lexems.yy.c"
@@ -816,7 +816,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 10 "./lex/lexems.l"
+#line 9 "./lex/lexems.l"
 {
     yylval.node = ast_create_node(ast, "DEC", yytext, NULL, NULL);
     return DEC;
@@ -825,7 +825,7 @@ YY_RULE_SETUP
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 14 "./lex/lexems.l"
+#line 13 "./lex/lexems.l"
 {
     char buffer[1024];
     strncpy(buffer, yytext+1, strlen(yytext)-2);
@@ -837,7 +837,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 21 "./lex/lexems.l"
+#line 20 "./lex/lexems.l"
 {
     char buffer[1];
     strncpy(buffer, yytext+1, 1);
@@ -847,15 +847,18 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 27 "./lex/lexems.l"
+#line 26 "./lex/lexems.l"
 {
+    if (yytext[0] == '\0') {
+     yytext = "dynamic";
+    }
     yylval.node = ast_create_node(ast, "ARRAY_COMMAS", yytext, NULL, NULL);
     return ARRAY_COMMAS;
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 32 "./lex/lexems.l"
+#line 34 "./lex/lexems.l"
 {
     char* buffer = malloc(256);
     sprintf(buffer, "%d", strtol(yytext + 2, NULL, 16));
@@ -865,7 +868,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 38 "./lex/lexems.l"
+#line 40 "./lex/lexems.l"
 {
     char* buffer = malloc(256);
     sprintf(buffer, "%d", strtol(yytext + 2, NULL, 2));
@@ -875,7 +878,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 44 "./lex/lexems.l"
+#line 46 "./lex/lexems.l"
 {
            yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
            return TYPEDEF;
@@ -883,7 +886,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 48 "./lex/lexems.l"
+#line 50 "./lex/lexems.l"
 {
           yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
           return TYPEDEF;
@@ -891,7 +894,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 52 "./lex/lexems.l"
+#line 54 "./lex/lexems.l"
 {
            yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
            return TYPEDEF;
@@ -899,7 +902,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 56 "./lex/lexems.l"
+#line 58 "./lex/lexems.l"
 {
            yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
            return TYPEDEF;
@@ -907,7 +910,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 60 "./lex/lexems.l"
+#line 62 "./lex/lexems.l"
 {
            yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
            return TYPEDEF;
@@ -915,7 +918,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 64 "./lex/lexems.l"
+#line 66 "./lex/lexems.l"
 {
             yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
             return TYPEDEF;
@@ -923,7 +926,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 68 "./lex/lexems.l"
+#line 70 "./lex/lexems.l"
 {
            yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
            return TYPEDEF;
@@ -931,7 +934,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 72 "./lex/lexems.l"
+#line 74 "./lex/lexems.l"
 {
               yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
               return TYPEDEF;
@@ -939,7 +942,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 76 "./lex/lexems.l"
+#line 78 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "IF", "", NULL, NULL);
  return IF;
@@ -947,7 +950,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 80 "./lex/lexems.l"
+#line 82 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "THEN", "", NULL, NULL);
  return THEN;
@@ -955,7 +958,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 84 "./lex/lexems.l"
+#line 86 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "ELSE", "", NULL, NULL);
  return ELSE;
@@ -963,7 +966,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 88 "./lex/lexems.l"
+#line 90 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "DO", "", NULL, NULL);
  return DO;
@@ -971,7 +974,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 92 "./lex/lexems.l"
+#line 94 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "LOOP", "", NULL, NULL);
  return LOOP;
@@ -979,7 +982,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 96 "./lex/lexems.l"
+#line 98 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "WHILE", "", NULL, NULL);
  return WHILE;
@@ -987,7 +990,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 100 "./lex/lexems.l"
+#line 102 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "UNTIL", "", NULL, NULL);
  return UNTIL;
@@ -995,7 +998,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 104 "./lex/lexems.l"
+#line 106 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "BREAK", "", NULL, NULL);
  return BREAK;
@@ -1003,7 +1006,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 108 "./lex/lexems.l"
+#line 110 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "END", "", NULL, NULL);
  return END;
@@ -1011,7 +1014,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 112 "./lex/lexems.l"
+#line 114 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "WEND", "", NULL, NULL);
  return WEND;
@@ -1019,7 +1022,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 116 "./lex/lexems.l"
+#line 118 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "TRUE", "", NULL, NULL);
  return TRUE;
@@ -1027,7 +1030,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 120 "./lex/lexems.l"
+#line 122 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "FALSE", "", NULL, NULL);
  return FALSE;
@@ -1035,126 +1038,126 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 124 "./lex/lexems.l"
+#line 126 "./lex/lexems.l"
 {
  return PERCENT;
  }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 127 "./lex/lexems.l"
+#line 129 "./lex/lexems.l"
 {
  return SEMICOLON;
  }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 130 "./lex/lexems.l"
+#line 132 "./lex/lexems.l"
 {
  return COMMA;
  }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 133 "./lex/lexems.l"
+#line 135 "./lex/lexems.l"
 {
  return NOTEQUAL;
  }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 136 "./lex/lexems.l"
+#line 138 "./lex/lexems.l"
 {
  return NOT;
  }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 139 "./lex/lexems.l"
+#line 141 "./lex/lexems.l"
 {
  return OR;
  }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 142 "./lex/lexems.l"
+#line 144 "./lex/lexems.l"
 {
  return AND;
  }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 145 "./lex/lexems.l"
+#line 147 "./lex/lexems.l"
 {
  return PLUS;
  }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 148 "./lex/lexems.l"
+#line 150 "./lex/lexems.l"
 {
  return MINUS;
  }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 151 "./lex/lexems.l"
+#line 153 "./lex/lexems.l"
 {
  return LESSTHANEQ;
  }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 154 "./lex/lexems.l"
+#line 156 "./lex/lexems.l"
 {
  return GREATERTHANEQ;
  }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 157 "./lex/lexems.l"
+#line 159 "./lex/lexems.l"
 {
  return LESSTHAN;
  }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 160 "./lex/lexems.l"
+#line 162 "./lex/lexems.l"
 {
  return GREATERTHAN;
  }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 163 "./lex/lexems.l"
+#line 165 "./lex/lexems.l"
 {
  return STAR;
  }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 166 "./lex/lexems.l"
+#line 168 "./lex/lexems.l"
 {
  return LPAREN;
  }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 169 "./lex/lexems.l"
+#line 171 "./lex/lexems.l"
 {
  return RPAREN;
  }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 172 "./lex/lexems.l"
+#line 174 "./lex/lexems.l"
 {
  return EQUAL;
  }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 175 "./lex/lexems.l"
+#line 177 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "DIM", yytext, NULL, NULL);
  return DIM;
@@ -1162,7 +1165,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 179 "./lex/lexems.l"
+#line 181 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "AS", yytext, NULL, NULL);
  return AS;
@@ -1170,7 +1173,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 183 "./lex/lexems.l"
+#line 185 "./lex/lexems.l"
 {
  yylval.node = ast_create_node(ast, "FUNCTION", yytext, NULL, NULL);
  return FUNCTION;
@@ -1178,7 +1181,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 187 "./lex/lexems.l"
+#line 189 "./lex/lexems.l"
 {
     yylval.node = ast_create_node(ast, "IDENTIFIER", yytext, NULL, NULL);
     return IDENTIFIER;
@@ -1186,26 +1189,26 @@ YY_RULE_SETUP
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 191 "./lex/lexems.l"
+#line 193 "./lex/lexems.l"
 { /* Пропустить комментарии */ }
 	YY_BREAK
 case 49:
 /* rule 49 can match eol */
 YY_RULE_SETUP
-#line 192 "./lex/lexems.l"
+#line 194 "./lex/lexems.l"
 { /* Пропустить переводы строк */ }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 193 "./lex/lexems.l"
+#line 195 "./lex/lexems.l"
 { /* Пропустить пробелы и табуляцию */ }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 194 "./lex/lexems.l"
+#line 196 "./lex/lexems.l"
 ECHO;
 	YY_BREAK
-#line 1209 "./src/lexems.yy.c"
+#line 1212 "./src/lexems.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2210,7 +2213,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 194 "./lex/lexems.l"
+#line 196 "./lex/lexems.l"
 
 
 

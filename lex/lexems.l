@@ -1,7 +1,7 @@
 %{
 #include <string.h>
 #include "parser.tab.h"
-#define YY_DECL int yylex(YYSTYPE* yylval_param, Ast* ast)
+#define YY_DECL int yylex(Ast* ast)
 %}
 
 %%
@@ -24,6 +24,9 @@
     return CHAR;
 }
 \(,*\) {
+    if (yytext[0] == '\0') {
+     yytext = "dynamic";
+    }
     yylval.node = ast_create_node(ast, "ARRAY_COMMAS", yytext, NULL, NULL);
     return ARRAY_COMMAS;
 }

@@ -83,7 +83,7 @@ optionalFuncBody: %empty {{$$ = NULL;}}
 
 /* FuncSignature */
 funcSignature: IDENTIFIER LPAREN listArgDef RPAREN optionalTypeRef {{
-    $$ = ast_create_node(ast, "Function Signature", $1->value, $1, $2);
+    $$ = ast_create_node(ast, "Function Signature", $1->value, $3, $5);
 }};
 
 listArgDef: %empty {{$$ = NULL;}}
