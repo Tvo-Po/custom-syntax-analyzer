@@ -16,6 +16,7 @@ int main(int argc, char* argv[]) {
 
   if (argc != 2) {
     printf("[!] Invalid usage: %s filename \n", argv[0]);
+    return 1;
   }
 
   FILE* input = fopen(argv[1], "r");
