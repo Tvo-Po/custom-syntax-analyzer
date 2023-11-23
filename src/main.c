@@ -5,6 +5,7 @@
 #define OUTPUT_FILE "output.md"
 
 extern FILE* yyin;
+extern int yyparse(Ast* ast);
 
 void yyerror(Ast* ast, const char* s) {
   fprintf(stderr, "[!] %s\n", s);

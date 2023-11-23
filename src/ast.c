@@ -36,14 +36,13 @@ void destroy_ast(Ast* ast) {
 }
 
 AstNode* ast_create_node(Ast* ast, char* name, char* value, AstNode* left, AstNode* right) {
-  printf("Node %d %s %s\n", ast->counter, name, value);
   AstNode* node = malloc(sizeof(AstNode));
   node->id = ast->counter++;
   assert(name);
-  node->name = malloc(sizeof(name));
+  node->name = strdup(name);
   strcpy(node->name, name);
   if (value) {
-    node->value = malloc(sizeof(value));
+    node->value = strdup(value);
     strcpy(node->value, value);
   }
   else {

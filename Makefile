@@ -4,14 +4,7 @@ PREF_SRC = ./src/
 PREF_OBJ = ./obj/
 
 SRC = $(wildcard $(PREF_SRC)*.c)
-
-# Remove parser code file to escape definition duplication
-# SRC := $(patsubst $(PREF_SRC)parser.tab.c, , $(SRC))
-
 OBJ = $(patsubst $(PREF_SRC)%.c, $(PREF_OBJ)%.o, $(SRC))
-
-test:
-	echo $(SRC)
 
 compile: $(OBJ)
 	gcc $(OBJ) -o $(TARGET)
