@@ -1541,7 +1541,7 @@ yyreduce:
   case 3: /* source: source sourceItem  */
 #line 73 "./lex/parser.y"
                         {{
-        ast->head = ast_create_node(ast, "Source", "", (yyvsp[-1].node), (yyvsp[0].node));
+        ast->head = ast_create_node(ast, CFG_NONE, "Source", "", (yyvsp[-1].node), (yyvsp[0].node));
         (yyval.node) = ast->head;
     }}
 #line 1548 "./src/parser.tab.c"
@@ -1549,7 +1549,7 @@ yyreduce:
 
   case 4: /* sourceItem: FUNCTION funcSignature optionalFuncBody  */
 #line 78 "./lex/parser.y"
-                                                    {{(yyval.node) = ast_create_node(ast, "Source Item", "", (yyvsp[-1].node), (yyvsp[0].node));}}
+                                                    {{(yyval.node) = ast_create_node(ast, CFG_NONE, "Source Item", "", (yyvsp[-1].node), (yyvsp[0].node));}}
 #line 1554 "./src/parser.tab.c"
     break;
 
@@ -1561,14 +1561,14 @@ yyreduce:
 
   case 6: /* optionalFuncBody: listStatement END FUNCTION  */
 #line 81 "./lex/parser.y"
-                                 {{(yyval.node) = ast_create_node(ast, "Function Body", "", (yyvsp[-2].node), NULL);}}
+                                 {{(yyval.node) = ast_create_node(ast, CFG_SUBPROGRAM, "Function Body", "", (yyvsp[-2].node), NULL);}}
 #line 1566 "./src/parser.tab.c"
     break;
 
   case 7: /* funcSignature: IDENTIFIER LPAREN listArgDef RPAREN optionalTypeRef  */
 #line 85 "./lex/parser.y"
                                                                    {{
-    (yyval.node) = ast_create_node(ast, "Function Signature", (yyvsp[-4].node)->value, (yyvsp[-2].node), (yyvsp[0].node));
+    (yyval.node) = ast_create_node(ast, CFG_NONE, "Function Signature", (yyvsp[-4].node)->value, (yyvsp[-2].node), (yyvsp[0].node));
 }}
 #line 1574 "./src/parser.tab.c"
     break;
@@ -1587,13 +1587,13 @@ yyreduce:
 
   case 10: /* listArgDef: argDef COMMA listArgDef  */
 #line 91 "./lex/parser.y"
-                              {{(yyval.node) = ast_create_node(ast, "Function Arguments", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                              {{(yyval.node) = ast_create_node(ast, CFG_NONE, "Function Arguments", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1592 "./src/parser.tab.c"
     break;
 
   case 11: /* argDef: IDENTIFIER optionalTypeRef  */
 #line 93 "./lex/parser.y"
-                                   {{(yyval.node) = ast_create_node(ast, "Argument Definition", "", (yyvsp[-1].node), (yyvsp[0].node));}}
+                                   {{(yyval.node) = ast_create_node(ast, CFG_NONE, "Argument Definition", "", (yyvsp[-1].node), (yyvsp[0].node));}}
 #line 1598 "./src/parser.tab.c"
     break;
 
@@ -1641,7 +1641,7 @@ yyreduce:
 
   case 19: /* array: typeRef ARRAY_COMMAS  */
 #line 108 "./lex/parser.y"
-                            {{(yyval.node) = ast_create_node(ast, "Array", (yyvsp[0].node)->value, (yyvsp[-1].node), NULL);}}
+                            {{(yyval.node) = ast_create_node(ast, CFG_NONE, "Array", (yyvsp[0].node)->value, (yyvsp[-1].node), NULL);}}
 #line 1646 "./src/parser.tab.c"
     break;
 
@@ -1689,13 +1689,13 @@ yyreduce:
 
   case 27: /* listStatement: statement listStatement  */
 #line 120 "./lex/parser.y"
-                              {{(yyval.node) = ast_create_node(ast, "Statements", "", (yyvsp[-1].node), (yyvsp[0].node));}}
+                              {{(yyval.node) = ast_create_node(ast, CFG_NONE, "Statements", "", (yyvsp[-1].node), (yyvsp[0].node));}}
 #line 1694 "./src/parser.tab.c"
     break;
 
   case 28: /* var: DIM listIdentifier AS typeRef  */
 #line 122 "./lex/parser.y"
-                                   {{(yyval.node) = ast_create_node(ast, "Variables Declaration", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                                   {{(yyval.node) = ast_create_node(ast, CFG_ACTION, "Variables Declaration", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1700 "./src/parser.tab.c"
     break;
 
@@ -1713,14 +1713,14 @@ yyreduce:
 
   case 31: /* listIdentifier: IDENTIFIER COMMA listIdentifier  */
 #line 126 "./lex/parser.y"
-                                      {{(yyval.node) = ast_create_node(ast, "Identifiers", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                                      {{(yyval.node) = ast_create_node(ast, CFG_NONE, "Identifiers", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1718 "./src/parser.tab.c"
     break;
 
   case 32: /* if: IF expr THEN listStatement optionalElseStatement END IF  */
 #line 128 "./lex/parser.y"
                                                             {{
-    (yyval.node) = ast_create_node(ast, "if", "", (yyvsp[-5].node), ast_create_node(ast, "If Body", "", (yyvsp[-3].node), (yyvsp[-2].node)));
+    (yyval.node) = ast_create_node(ast, CFG_CONDITION, "if", "", (yyvsp[-5].node), ast_create_node(ast, CFG_NONE, "If Body", "", (yyvsp[-3].node), (yyvsp[-2].node)));
   }}
 #line 1726 "./src/parser.tab.c"
     break;
@@ -1733,25 +1733,25 @@ yyreduce:
 
   case 34: /* optionalElseStatement: ELSE listStatement  */
 #line 133 "./lex/parser.y"
-                         {{(yyval.node) = ast_create_node(ast, "Else Body", "", (yyvsp[0].node), NULL);}}
+                         {{(yyval.node) = ast_create_node(ast, CFG_NONE, "Else Body", "", (yyvsp[0].node), NULL);}}
 #line 1738 "./src/parser.tab.c"
     break;
 
   case 35: /* while: WHILE expr listStatement WEND  */
 #line 135 "./lex/parser.y"
-                                     {{(yyval.node) = ast_create_node(ast, "While", "", (yyvsp[-2].node), (yyvsp[-1].node));}}
+                                     {{(yyval.node) = ast_create_node(ast, CFG_LOOP, "While", "", (yyvsp[-2].node), (yyvsp[-1].node));}}
 #line 1744 "./src/parser.tab.c"
     break;
 
   case 36: /* do: DO listStatement LOOP WHILE expr  */
 #line 137 "./lex/parser.y"
-                                     {{(yyval.node) = ast_create_node(ast, "Do While", "", (yyvsp[-3].node), (yyvsp[0].node));}}
+                                     {{(yyval.node) = ast_create_node(ast, CFG_LOOP, "Do While", "", (yyvsp[-3].node), (yyvsp[0].node));}}
 #line 1750 "./src/parser.tab.c"
     break;
 
   case 37: /* do: DO listStatement LOOP UNTIL expr  */
 #line 138 "./lex/parser.y"
-                                     {{(yyval.node) = ast_create_node(ast, "Do Until", "", (yyvsp[-3].node), (yyvsp[0].node));}}
+                                     {{(yyval.node) = ast_create_node(ast, CFG_LOOP, "Do Until", "", (yyvsp[-3].node), (yyvsp[0].node));}}
 #line 1756 "./src/parser.tab.c"
     break;
 
@@ -1763,7 +1763,7 @@ yyreduce:
 
   case 39: /* expression: expr SEMICOLON  */
 #line 142 "./lex/parser.y"
-                           {{(yyval.node) = (yyvsp[-1].node);}}
+                           {{(yyval.node) = ast_create_node(ast, CFG_ACTION, "Expression", "", (yyvsp[-1].node), NULL);}}
 #line 1768 "./src/parser.tab.c"
     break;
 
@@ -1805,121 +1805,121 @@ yyreduce:
 
   case 46: /* binary: expr EQUAL expr  */
 #line 153 "./lex/parser.y"
-                        {{(yyval.node) = ast_create_node(ast, "ASSIGNMENT", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                        {{(yyval.node) = ast_create_node(ast, CFG_NONE, "ASSIGNMENT", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1810 "./src/parser.tab.c"
     break;
 
   case 47: /* binary: expr PLUS expr  */
 #line 154 "./lex/parser.y"
-                     {{(yyval.node) = ast_create_node(ast, "PLUS", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                     {{(yyval.node) = ast_create_node(ast, CFG_NONE, "PLUS", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1816 "./src/parser.tab.c"
     break;
 
   case 48: /* binary: expr MINUS expr  */
 #line 155 "./lex/parser.y"
-                      {{(yyval.node) = ast_create_node(ast, "MINUS", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                      {{(yyval.node) = ast_create_node(ast, CFG_NONE, "MINUS", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1822 "./src/parser.tab.c"
     break;
 
   case 49: /* binary: expr STAR expr  */
 #line 156 "./lex/parser.y"
-                     {{(yyval.node) = ast_create_node(ast, "STAR", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                     {{(yyval.node) = ast_create_node(ast, CFG_NONE, "STAR", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1828 "./src/parser.tab.c"
     break;
 
   case 50: /* binary: expr SLASH expr  */
 #line 157 "./lex/parser.y"
-                      {{(yyval.node) = ast_create_node(ast, "SLASH", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                      {{(yyval.node) = ast_create_node(ast, CFG_NONE, "SLASH", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1834 "./src/parser.tab.c"
     break;
 
   case 51: /* binary: expr PERCENT expr  */
 #line 158 "./lex/parser.y"
-                        {{(yyval.node) = ast_create_node(ast, "PERCENT", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                        {{(yyval.node) = ast_create_node(ast, CFG_NONE, "PERCENT", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1840 "./src/parser.tab.c"
     break;
 
   case 52: /* binary: expr EQUAL EQUAL expr  */
 #line 159 "./lex/parser.y"
-                            {{(yyval.node) = ast_create_node(ast, "EQUALITY", "", (yyvsp[-3].node), (yyvsp[0].node));}}
+                            {{(yyval.node) = ast_create_node(ast, CFG_NONE, "EQUALITY", "", (yyvsp[-3].node), (yyvsp[0].node));}}
 #line 1846 "./src/parser.tab.c"
     break;
 
   case 53: /* binary: expr NOTEQUAL expr  */
 #line 160 "./lex/parser.y"
-                         {{(yyval.node) = ast_create_node(ast, "NOTEQUAL", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                         {{(yyval.node) = ast_create_node(ast, CFG_NONE, "NOTEQUAL", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1852 "./src/parser.tab.c"
     break;
 
   case 54: /* binary: expr LESSTHAN expr  */
 #line 161 "./lex/parser.y"
-                         {{(yyval.node) = ast_create_node(ast, "LESSTHAN", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                         {{(yyval.node) = ast_create_node(ast, CFG_NONE, "LESSTHAN", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1858 "./src/parser.tab.c"
     break;
 
   case 55: /* binary: expr GREATERTHAN expr  */
 #line 162 "./lex/parser.y"
-                            {{(yyval.node) = ast_create_node(ast, "GREATERTHAN", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                            {{(yyval.node) = ast_create_node(ast, CFG_NONE, "GREATERTHAN", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1864 "./src/parser.tab.c"
     break;
 
   case 56: /* binary: expr LESSTHANEQ expr  */
 #line 163 "./lex/parser.y"
-                           {{(yyval.node) = ast_create_node(ast, "LESSTHANEQ", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                           {{(yyval.node) = ast_create_node(ast, CFG_NONE, "LESSTHANEQ", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1870 "./src/parser.tab.c"
     break;
 
   case 57: /* binary: expr GREATERTHANEQ expr  */
 #line 164 "./lex/parser.y"
-                              {{(yyval.node) = ast_create_node(ast, "GREATERTHANEQ", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                              {{(yyval.node) = ast_create_node(ast, CFG_NONE, "GREATERTHANEQ", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1876 "./src/parser.tab.c"
     break;
 
   case 58: /* binary: expr AND expr  */
 #line 165 "./lex/parser.y"
-                    {{(yyval.node) = ast_create_node(ast, "AND", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                    {{(yyval.node) = ast_create_node(ast, CFG_NONE, "AND", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1882 "./src/parser.tab.c"
     break;
 
   case 59: /* binary: expr OR expr  */
 #line 166 "./lex/parser.y"
-                   {{(yyval.node) = ast_create_node(ast, "OR", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                   {{(yyval.node) = ast_create_node(ast, CFG_NONE, "OR", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1888 "./src/parser.tab.c"
     break;
 
   case 60: /* unary: PLUS expr  */
 #line 168 "./lex/parser.y"
-                 {{(yyval.node) = ast_create_node(ast, "PLUS", "", (yyvsp[0].node), NULL);}}
+                 {{(yyval.node) = ast_create_node(ast, CFG_NONE, "PLUS", "", (yyvsp[0].node), NULL);}}
 #line 1894 "./src/parser.tab.c"
     break;
 
   case 61: /* unary: MINUS expr  */
 #line 169 "./lex/parser.y"
-                 {{(yyval.node) = ast_create_node(ast, "MINUS", "", (yyvsp[0].node), NULL);}}
+                 {{(yyval.node) = ast_create_node(ast, CFG_NONE, "MINUS", "", (yyvsp[0].node), NULL);}}
 #line 1900 "./src/parser.tab.c"
     break;
 
   case 62: /* unary: NOT expr  */
 #line 170 "./lex/parser.y"
-               {{(yyval.node) = ast_create_node(ast, "NOT", "", (yyvsp[0].node), NULL);}}
+               {{(yyval.node) = ast_create_node(ast, CFG_NONE, "NOT", "", (yyvsp[0].node), NULL);}}
 #line 1906 "./src/parser.tab.c"
     break;
 
   case 63: /* braces: LPAREN expr RPAREN  */
 #line 172 "./lex/parser.y"
-                            {{(yyval.node) = ast_create_node(ast, "BRACES", "", (yyvsp[-1].node), NULL);}}
+                            {{(yyval.node) = ast_create_node(ast, CFG_NONE, "BRACES", "", (yyvsp[-1].node), NULL);}}
 #line 1912 "./src/parser.tab.c"
     break;
 
   case 64: /* callOrIndexer: expr LPAREN listExpr RPAREN  */
 #line 174 "./lex/parser.y"
-                                            {{(yyval.node) = ast_create_node(ast, "CALLORINDEXER", "", (yyvsp[-3].node), (yyvsp[-1].node));}}
+                                            {{(yyval.node) = ast_create_node(ast, CFG_NONE, "CALLORINDEXER", "", (yyvsp[-3].node), (yyvsp[-1].node));}}
 #line 1918 "./src/parser.tab.c"
     break;
 
   case 65: /* listExpr: expr COMMA listExpr  */
 #line 176 "./lex/parser.y"
-                              {{(yyval.node) = ast_create_node(ast, "Expressions", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                              {{(yyval.node) = ast_create_node(ast, CFG_NONE, "Expressions", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1924 "./src/parser.tab.c"
     break;
 

@@ -35,9 +35,10 @@ void destroy_ast(Ast* ast) {
   free(ast);
 }
 
-AstNode* ast_create_node(Ast* ast, char* name, char* value, AstNode* left, AstNode* right) {
+AstNode* ast_create_node(Ast* ast, ControlStatementType type, char* name, char* value, AstNode* left, AstNode* right) {
   AstNode* node = malloc(sizeof(AstNode));
   node->id = ast->counter++;
+  node->type = type;
   assert(name);
   node->name = strdup(name);
   strcpy(node->name, name);

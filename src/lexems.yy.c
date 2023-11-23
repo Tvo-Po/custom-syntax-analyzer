@@ -818,7 +818,7 @@ case 1:
 YY_RULE_SETUP
 #line 9 "./lex/lexems.l"
 {
-    yylval.node = ast_create_node(ast, "DEC", yytext, NULL, NULL);
+    yylval.node = ast_create_node(ast, CFG_NONE, "DEC", yytext, NULL, NULL);
     return DEC;
 }
 	YY_BREAK
@@ -830,7 +830,7 @@ YY_RULE_SETUP
     char buffer[1024];
     strncpy(buffer, yytext+1, strlen(yytext)-2);
     buffer[strlen(buffer)-1] = 0;
-    yylval.node = ast_create_node(ast, "STR", buffer, NULL, NULL);
+    yylval.node = ast_create_node(ast, CFG_NONE, "STR", buffer, NULL, NULL);
     return STR;
 }
 	YY_BREAK
@@ -841,7 +841,7 @@ YY_RULE_SETUP
 {
     char buffer[1];
     strncpy(buffer, yytext+1, 1);
-    yylval.node = ast_create_node(ast, "CHAR", buffer, NULL, NULL);
+    yylval.node = ast_create_node(ast, CFG_NONE, "CHAR", buffer, NULL, NULL);
     return CHAR;
 }
 	YY_BREAK
@@ -852,7 +852,7 @@ YY_RULE_SETUP
     if (yytext[0] == '\0') {
      yytext = "dynamic";
     }
-    yylval.node = ast_create_node(ast, "ARRAY_COMMAS", yytext, NULL, NULL);
+    yylval.node = ast_create_node(ast, CFG_NONE, "ARRAY_COMMAS", yytext, NULL, NULL);
     return ARRAY_COMMAS;
 }
 	YY_BREAK
@@ -862,7 +862,7 @@ YY_RULE_SETUP
 {
     char* buffer = malloc(256);
     sprintf(buffer, "%d", strtol(yytext + 2, NULL, 16));
-    yylval.node = ast_create_node(ast, "HEX", buffer, NULL, NULL);
+    yylval.node = ast_create_node(ast, CFG_NONE, "HEX", buffer, NULL, NULL);
     return HEX;
 }
 	YY_BREAK
@@ -872,7 +872,7 @@ YY_RULE_SETUP
 {
     char* buffer = malloc(256);
     sprintf(buffer, "%d", strtol(yytext + 2, NULL, 2));
-    yylval.node = ast_create_node(ast, "BIN", buffer, NULL, NULL);
+    yylval.node = ast_create_node(ast, CFG_NONE, "BIN", buffer, NULL, NULL);
     return BIN;
 }
 	YY_BREAK
@@ -880,7 +880,7 @@ case 7:
 YY_RULE_SETUP
 #line 46 "./lex/lexems.l"
 {
-           yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
+           yylval.node = ast_create_node(ast, CFG_NONE, "TYPEDEF", yytext, NULL, NULL);
            return TYPEDEF;
        }
 	YY_BREAK
@@ -888,7 +888,7 @@ case 8:
 YY_RULE_SETUP
 #line 50 "./lex/lexems.l"
 {
-          yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
+          yylval.node = ast_create_node(ast, CFG_NONE, "TYPEDEF", yytext, NULL, NULL);
           return TYPEDEF;
       }
 	YY_BREAK
@@ -896,7 +896,7 @@ case 9:
 YY_RULE_SETUP
 #line 54 "./lex/lexems.l"
 {
-           yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
+           yylval.node = ast_create_node(ast, CFG_NONE, "TYPEDEF", yytext, NULL, NULL);
            return TYPEDEF;
        }
 	YY_BREAK
@@ -904,7 +904,7 @@ case 10:
 YY_RULE_SETUP
 #line 58 "./lex/lexems.l"
 {
-           yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
+           yylval.node = ast_create_node(ast, CFG_NONE, "TYPEDEF", yytext, NULL, NULL);
            return TYPEDEF;
        }
 	YY_BREAK
@@ -912,7 +912,7 @@ case 11:
 YY_RULE_SETUP
 #line 62 "./lex/lexems.l"
 {
-           yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
+           yylval.node = ast_create_node(ast, CFG_NONE, "TYPEDEF", yytext, NULL, NULL);
            return TYPEDEF;
        }
 	YY_BREAK
@@ -920,7 +920,7 @@ case 12:
 YY_RULE_SETUP
 #line 66 "./lex/lexems.l"
 {
-            yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
+            yylval.node = ast_create_node(ast, CFG_NONE, "TYPEDEF", yytext, NULL, NULL);
             return TYPEDEF;
         }
 	YY_BREAK
@@ -928,7 +928,7 @@ case 13:
 YY_RULE_SETUP
 #line 70 "./lex/lexems.l"
 {
-           yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
+           yylval.node = ast_create_node(ast, CFG_NONE, "TYPEDEF", yytext, NULL, NULL);
            return TYPEDEF;
        }
 	YY_BREAK
@@ -936,7 +936,7 @@ case 14:
 YY_RULE_SETUP
 #line 74 "./lex/lexems.l"
 {
-              yylval.node = ast_create_node(ast, "TYPEDEF", yytext, NULL, NULL);
+              yylval.node = ast_create_node(ast, CFG_NONE, "TYPEDEF", yytext, NULL, NULL);
               return TYPEDEF;
           }
 	YY_BREAK
@@ -944,7 +944,7 @@ case 15:
 YY_RULE_SETUP
 #line 78 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "IF", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "IF", "", NULL, NULL);
  return IF;
  }
 	YY_BREAK
@@ -952,7 +952,7 @@ case 16:
 YY_RULE_SETUP
 #line 82 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "THEN", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "THEN", "", NULL, NULL);
  return THEN;
  }
 	YY_BREAK
@@ -960,7 +960,7 @@ case 17:
 YY_RULE_SETUP
 #line 86 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "ELSE", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "ELSE", "", NULL, NULL);
  return ELSE;
  }
 	YY_BREAK
@@ -968,7 +968,7 @@ case 18:
 YY_RULE_SETUP
 #line 90 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "DO", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "DO", "", NULL, NULL);
  return DO;
  }
 	YY_BREAK
@@ -976,7 +976,7 @@ case 19:
 YY_RULE_SETUP
 #line 94 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "LOOP", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "LOOP", "", NULL, NULL);
  return LOOP;
  }
 	YY_BREAK
@@ -984,7 +984,7 @@ case 20:
 YY_RULE_SETUP
 #line 98 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "WHILE", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "WHILE", "", NULL, NULL);
  return WHILE;
  }
 	YY_BREAK
@@ -992,7 +992,7 @@ case 21:
 YY_RULE_SETUP
 #line 102 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "UNTIL", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "UNTIL", "", NULL, NULL);
  return UNTIL;
  }
 	YY_BREAK
@@ -1000,7 +1000,7 @@ case 22:
 YY_RULE_SETUP
 #line 106 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "BREAK", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "BREAK", "", NULL, NULL);
  return BREAK;
  }
 	YY_BREAK
@@ -1008,7 +1008,7 @@ case 23:
 YY_RULE_SETUP
 #line 110 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "END", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "END", "", NULL, NULL);
  return END;
  }
 	YY_BREAK
@@ -1016,7 +1016,7 @@ case 24:
 YY_RULE_SETUP
 #line 114 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "WEND", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "WEND", "", NULL, NULL);
  return WEND;
  }
 	YY_BREAK
@@ -1024,7 +1024,7 @@ case 25:
 YY_RULE_SETUP
 #line 118 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "TRUE", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "TRUE", "", NULL, NULL);
  return TRUE;
  }
 	YY_BREAK
@@ -1032,7 +1032,7 @@ case 26:
 YY_RULE_SETUP
 #line 122 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "FALSE", "", NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "FALSE", "", NULL, NULL);
  return FALSE;
  }
 	YY_BREAK
@@ -1159,7 +1159,7 @@ case 44:
 YY_RULE_SETUP
 #line 177 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "DIM", yytext, NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "DIM", yytext, NULL, NULL);
  return DIM;
  }
 	YY_BREAK
@@ -1167,7 +1167,7 @@ case 45:
 YY_RULE_SETUP
 #line 181 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "AS", yytext, NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "AS", yytext, NULL, NULL);
  return AS;
  }
 	YY_BREAK
@@ -1175,7 +1175,7 @@ case 46:
 YY_RULE_SETUP
 #line 185 "./lex/lexems.l"
 {
- yylval.node = ast_create_node(ast, "FUNCTION", yytext, NULL, NULL);
+ yylval.node = ast_create_node(ast, CFG_NONE, "FUNCTION", yytext, NULL, NULL);
  return FUNCTION;
  }
 	YY_BREAK
@@ -1183,7 +1183,7 @@ case 47:
 YY_RULE_SETUP
 #line 189 "./lex/lexems.l"
 {
-    yylval.node = ast_create_node(ast, "IDENTIFIER", yytext, NULL, NULL);
+    yylval.node = ast_create_node(ast, CFG_NONE, "IDENTIFIER", yytext, NULL, NULL);
     return IDENTIFIER;
 }
 	YY_BREAK
