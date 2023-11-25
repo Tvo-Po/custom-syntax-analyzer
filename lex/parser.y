@@ -71,7 +71,7 @@
 /* SourceItem */
 source: %empty {{$$ = NULL;}}
     | source sourceItem {{
-        ast->head = ast_create_node(ast, CFG_SUBPROGRAMS, "Source", "", $2, $1);
+        ast->head = ast_create_node(ast, CFG_SUBPROGRAMS, "Source", "", $1, $2);
         $$ = ast->head;
     }};
 
@@ -119,7 +119,7 @@ statement: var {{$$ =  $1;}}
 listStatement: %empty {{$$ = NULL;}}
     | statement listStatement {{$$ = ast_create_node(ast, CFG_NONE, "Statements", "", $1, $2);}};
 
-var: DIM listIdentifier AS typeRef {{$$ = ast_create_node(ast, CFG_ACTION, "Variables Declaration", "", $2, $4);}}
+var: DIM listIdentifier AS typeRef {{$$ = ast_create_node(ast, CFG_NONE, "Variables Declaration", "", $2, $4);}}
 
 listIdentifier: %empty {{$$ = NULL;}}
     | IDENTIFIER {{$$ = $1;}}
@@ -134,8 +134,8 @@ optionalElseStatement: %empty {{$$ = NULL;}}
 
 while: WHILE expr listStatement WEND {{$$ = ast_create_node(ast, CFG_LOOP, "While", "", $2, $3);}};
 
-do: DO listStatement LOOP WHILE expr {{$$ = ast_create_node(ast, CFG_LOOP, "Do While", "", $2, $5);}}
-  | DO listStatement LOOP UNTIL expr {{$$ = ast_create_node(ast, CFG_LOOP, "Do Until", "", $2, $5);}};
+do: DO listStatement LOOP WHILE expr {{$$ = ast_create_node(ast, CFG_LOOP, "Do While", "", $5, $2);}}
+  | DO listStatement LOOP UNTIL expr {{$$ = ast_create_node(ast, CFG_LOOP, "Do Until", "", $5, $2);}};
 
 break: BREAK {{$$ = $1;}};
 

@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ast.h"
+#include "cfg.h"
 
-#define OUTPUT_FILE "output.md"
+#define MALLOC_CHECK_ 2
 
 extern FILE* yyin;
 extern int yyparse(Ast* ast);
@@ -13,43 +14,57 @@ void yyerror(Ast* ast, const char* s) {
 
 int main(int argc, char* argv[]) {
   puts("[+] Start parsing...");
-
+  
+  ControlFlow* control_flow = create_control_flow();
   Ast* ast = NULL;
 
   if (argc < 2) {
     printf("[!] Invalid usage: %s [filename...] \n", argv[0]);
+    return 1;
   }
   
   for (int i = 1; i < argc; i++) {
-    FILE* input = fopen(argv[1], "r");
+    FILE* input = fopen(argv[i], "r");
 
     if (!input) {
       printf("[!] Can not open file: %s\n", argv[1]);
-      return 1;
+      goto fail;
     }
 
     ast = create_ast();
     yyin = input;
     int result = yyparse(ast);
     fclose(input);
-    if (result != 0) goto fail; 
+    if (result != 0) goto fail;
 
-    FILE* output = fopen(OUTPUT_FILE, "w");
+    control_flow_create_subprograms_from_ast(control_flow, ast, argv[i]);
+    destroy_ast(ast);
+  }
+  
+  for (int i = 0; i < control_flow->length; i++) {
+    Subprogram* subp = control_flow->subprograms[i];
+    char* subprogram_dot = subprogram_to_dot(subp);
+    char* subprogram_dot_filename = subprogram_get_dot_filename(subp);
+    FILE* output = fopen(subprogram_dot_filename, "w");
+
+
     if (!output) {
-      printf("[!] Can not open file: %s\n", OUTPUT_FILE);
+      printf("[!] Can not open file: %s\n", subprogram_dot_filename);
       goto fail;
     }
-
-    char* md = ast_to_md(ast);
-    fputs(md ? md : "", output);
+    
+    fputs(subprogram_dot, output);
     fclose(output);
-    free(md);
-    destroy_ast(ast);
-    printf("[+] Code successfully parsed to: %s\n", OUTPUT_FILE);
+    free(subprogram_dot);
+    free(subprogram_dot_filename);
   }
-    return 0;
 
-  fail:   
-    destroy_ast(ast);
-    return 1;
+  destroy_control_flow(control_flow);
+  puts("[+] Parsing done...");
+  return 0;
+
+fail: 
+  destroy_control_flow(control_flow);
+  destroy_ast(ast);
+  return 1;
 }

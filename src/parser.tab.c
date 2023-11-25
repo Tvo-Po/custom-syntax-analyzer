@@ -1541,7 +1541,7 @@ yyreduce:
   case 3: /* source: source sourceItem  */
 #line 73 "./lex/parser.y"
                         {{
-        ast->head = ast_create_node(ast, CFG_NONE, "Source", "", (yyvsp[-1].node), (yyvsp[0].node));
+        ast->head = ast_create_node(ast, CFG_SUBPROGRAMS, "Source", "", (yyvsp[-1].node), (yyvsp[0].node));
         (yyval.node) = ast->head;
     }}
 #line 1548 "./src/parser.tab.c"
@@ -1549,7 +1549,7 @@ yyreduce:
 
   case 4: /* sourceItem: FUNCTION funcSignature optionalFuncBody  */
 #line 78 "./lex/parser.y"
-                                                    {{(yyval.node) = ast_create_node(ast, CFG_NONE, "Source Item", "", (yyvsp[-1].node), (yyvsp[0].node));}}
+                                                    {{(yyval.node) = ast_create_node(ast, CFG_SUBPROGRAM, "Source Item", "", (yyvsp[-1].node), (yyvsp[0].node));}}
 #line 1554 "./src/parser.tab.c"
     break;
 
@@ -1561,7 +1561,7 @@ yyreduce:
 
   case 6: /* optionalFuncBody: listStatement END FUNCTION  */
 #line 81 "./lex/parser.y"
-                                 {{(yyval.node) = ast_create_node(ast, CFG_SUBPROGRAM, "Function Body", "", (yyvsp[-2].node), NULL);}}
+                                 {{(yyval.node) = ast_create_node(ast, CFG_NONE, "Function Body", "", (yyvsp[-2].node), NULL);}}
 #line 1566 "./src/parser.tab.c"
     break;
 
@@ -1695,7 +1695,7 @@ yyreduce:
 
   case 28: /* var: DIM listIdentifier AS typeRef  */
 #line 122 "./lex/parser.y"
-                                   {{(yyval.node) = ast_create_node(ast, CFG_ACTION, "Variables Declaration", "", (yyvsp[-2].node), (yyvsp[0].node));}}
+                                   {{(yyval.node) = ast_create_node(ast, CFG_NONE, "Variables Declaration", "", (yyvsp[-2].node), (yyvsp[0].node));}}
 #line 1700 "./src/parser.tab.c"
     break;
 
@@ -1745,13 +1745,13 @@ yyreduce:
 
   case 36: /* do: DO listStatement LOOP WHILE expr  */
 #line 137 "./lex/parser.y"
-                                     {{(yyval.node) = ast_create_node(ast, CFG_LOOP, "Do While", "", (yyvsp[-3].node), (yyvsp[0].node));}}
+                                     {{(yyval.node) = ast_create_node(ast, CFG_LOOP, "Do While", "", (yyvsp[0].node), (yyvsp[-3].node));}}
 #line 1750 "./src/parser.tab.c"
     break;
 
   case 37: /* do: DO listStatement LOOP UNTIL expr  */
 #line 138 "./lex/parser.y"
-                                     {{(yyval.node) = ast_create_node(ast, CFG_LOOP, "Do Until", "", (yyvsp[-3].node), (yyvsp[0].node));}}
+                                     {{(yyval.node) = ast_create_node(ast, CFG_LOOP, "Do Until", "", (yyvsp[0].node), (yyvsp[-3].node));}}
 #line 1756 "./src/parser.tab.c"
     break;
 

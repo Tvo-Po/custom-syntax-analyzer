@@ -17,21 +17,17 @@ Ast* create_ast() {
 }
 
 void _destroy_node(AstNode* node) {
-  if (node->left) {
-    _destroy_node(node->left);
-  }
-  if (node->right) {
-    _destroy_node(node->right);
-  }
+  if (!node) return;
+  _destroy_node(node->left);
+  _destroy_node(node->right);
   free(node->name);
   free(node->value);
   free(node);
 }
 
 void destroy_ast(Ast* ast) {
-  if (ast->head) {
-    _destroy_node(ast->head);
-  }
+  if (!ast) return;
+  _destroy_node(ast->head);
   free(ast);
 }
 
