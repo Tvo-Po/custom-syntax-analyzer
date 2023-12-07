@@ -25,9 +25,7 @@ expr: {
 typeRef: {
   |builtin: 'bool'|'byte'|'int'|'uint'|'long'|'ulong'|'char'|'string';
   |custom: identifier;
-  |array: typeRef '(' (',')* ')';The program parses input files with defined language into abstract syntax trees and saves the output result as a dot graphs. <br/>
-Output files named "{original filename}.{function name}.ext" and contains the control flow graph of certain function. <br />
-The input language must match the following grammar:
+  |array: typeRef '(' (',')* ')';
 };
 
 statement: {
@@ -50,9 +48,9 @@ sourceItem: {
 source: sourceItem*;
 ```
 ## Usage
-```bash
-$: make compile
-$: ./analyzer [filename...]
+```console
+user@device:~$ make compile
+user@device:~$ ./analyzer [filename...]
 ```
 <br/>
 
@@ -64,9 +62,7 @@ function set_sock(sock as int) as int
   else
     sock = to_int(argv(1));
   end if
-end functionThe program parses input files with defined language into abstract syntax trees and saves the output result as a dot graphs. <br/>
-Output files named "{original filename}.{function name}.ext" and contains the control flow graph of certain function. <br />
-The input language must match the following grammar:
+end function
 
 function main(argc, argv as string())
   dim tmp, sock as int
